@@ -2,6 +2,13 @@
 
 A modern, multilingual e-commerce solution built on Frappe Framework that extends ERPNext's capabilities with custom frontend and advanced product management.
 
+<img width="1470" height="800" alt="Screenshot 2025-09-10 at 1 47 38 AM" src="https://github.com/user-attachments/assets/b776c69b-e009-4b9e-99df-06c1e40a8469" />
+
+## RTL
+
+<img width="1470" height="803" alt="Screenshot 2025-09-10 at 1 49 46 AM" src="https://github.com/user-attachments/assets/90180c6e-34d6-454f-b493-e5e984db13ee" />
+
+
 ## 🌟 Features
 
 ### 🌍 Multilingual Support
