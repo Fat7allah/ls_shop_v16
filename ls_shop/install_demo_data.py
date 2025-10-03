@@ -66,10 +66,14 @@ def install_demo_data():
 		print("\nYou can now access the shop at:")
 		print("  English: https://your-site.com/en/products")
 		print("  Arabic:  https://your-site.com/ar/products")
-		print("\nDemo products created:")
-		print("  - Classic T-Shirt (Multiple colors & sizes)")
-		print("  - Slim Fit Jeans (Multiple colors & sizes)")
-		print("  - Running Sneakers (Multiple colors & sizes)")
+		print("\nDemo products created (Car Parts Theme):")
+		print("  - Premium Brake Pads (Multiple colors & sizes)")
+		print("  - High-Flow Air Filter (Multiple colors & sizes)")
+		print("  - All-Weather Floor Mats (Multiple colors & sizes)")
+		print("\nDemo Categories created:")
+		print("  - Engine Parts")
+		print("  - Brake System")
+		print("  - Interior Accessories")
 		print("\n")
 		
 		frappe.db.commit()
@@ -137,7 +141,7 @@ def create_brands():
 	"""Create demo brands"""
 	print("  - Creating Brands...")
 	
-	brands = ["Adidas", "Nike", "Puma", "Lifestyle Store"]
+	brands = ["Brembo", "K&N", "WeatherTech", "Lifestyle Store"]
 	
 	for brand_name in brands:
 		if not frappe.db.exists("Brand", brand_name):
@@ -350,37 +354,37 @@ def create_demo_products():
 	
 	products = [
 		{
-			"code": "TSHIRT-CLASSIC",
-			"name": "Classic Cotton T-Shirt",
-			"item_group": "Men",
+			"code": "BRAKE-PADS",
+			"name": "Premium Brake Pads",
+			"item_group": "Brake System",
 			"brand": "Lifestyle Store",
-			"description": "Premium quality cotton t-shirt. Perfect for everyday wear.",
-			"colors": colors_to_use[:4],  # Use up to 4 colors
-			"sizes": sizes_to_use,
-			"base_price": 29.99,
-			"sale_price": 24.99
-		},
-		{
-			"code": "JEANS-SLIM",
-			"name": "Slim Fit Denim Jeans",
-			"item_group": "Men",
-			"brand": "Lifestyle Store",
-			"description": "Modern slim fit jeans with premium denim fabric. Comfortable and stylish.",
-			"colors": colors_to_use[:2],  # Use up to 2 colors
-			"sizes": sizes_to_use[:4],  # Use up to 4 sizes
-			"base_price": 79.99,
-			"sale_price": 69.99
-		},
-		{
-			"code": "SNEAKER-RUN",
-			"name": "Running Sneakers",
-			"item_group": "Men",
-			"brand": "Adidas",
-			"description": "High-performance running sneakers with advanced cushioning technology.",
+			"description": "High-performance ceramic brake pads with superior stopping power and minimal dust.",
 			"colors": colors_to_use[:3],  # Use up to 3 colors
-			"sizes": sizes_to_use[:4],  # Use up to 4 sizes
-			"base_price": 119.99,
-			"sale_price": 99.99
+			"sizes": sizes_to_use[:4],  # Use up to 4 sizes (can represent different fitment types)
+			"base_price": 89.99,
+			"sale_price": 74.99
+		},
+		{
+			"code": "AIR-FILTER",
+			"name": "High-Flow Air Filter",
+			"item_group": "Engine Parts",
+			"brand": "Adidas",
+			"description": "Performance air filter for improved engine airflow and horsepower. Washable and reusable.",
+			"colors": colors_to_use[:2],  # Use up to 2 colors
+			"sizes": sizes_to_use[:3],  # Use up to 3 sizes
+			"base_price": 49.99,
+			"sale_price": 39.99
+		},
+		{
+			"code": "FLOOR-MATS",
+			"name": "All-Weather Floor Mats",
+			"item_group": "Interior Accessories",
+			"brand": "Lifestyle Store",
+			"description": "Durable rubber floor mats with raised edges to contain spills and debris. Perfect fit guaranteed.",
+			"colors": colors_to_use[:4],  # Use up to 4 colors
+			"sizes": sizes_to_use[:5],  # Use up to 5 sizes (different vehicle models)
+			"base_price": 59.99,
+			"sale_price": 49.99
 		}
 	]
 	
@@ -662,7 +666,7 @@ def create_website_items():
 		filters={
 			"has_variants": 0,
 			"is_stock_item": 1,
-			"variant_of": ["in", ["TSHIRT-CLASSIC", "JEANS-SLIM", "SNEAKER-RUN"]]
+			"variant_of": ["in", ["BRAKE-PADS", "AIR-FILTER", "FLOOR-MATS"]]
 		},
 		fields=["name", "item_name", "item_group", "brand", "description", "variant_of"]
 	)

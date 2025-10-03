@@ -1,8 +1,8 @@
 {% from 'templates/macros/search_bar_modal.html' import search_bar %}
 {% from "templates/macros/icon.html" import icon %}
 {% include "templates/js/mega_menu.js.html" %}
-{% set brands = frappe.db.get_all('Brand',{"custom_display_on_website":True},order_by="name") %}
-{% set parent_categories = [{"name":"Men"},{"name":"Women"},{"name":"Kids"}] %}
+{% set brands = frappe.db.get_all('Brand', filters={"custom_display_on_website": True}, order_by="name") %}
+{% set parent_categories = frappe.db.get_all('Ecommerce Category', filters={"enabled": 1}, fields=["name", "display_name", "route_slug", "item_group"], order_by="display_order asc, category_name asc") %}
 
 <nav class="border-gray-200 bg-white shadow-sm">
   <div class="max-w-7xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
@@ -11,7 +11,7 @@
     </a>
     <ul class="hidden items-center md:gap-5  lg:gap-6 xl:gap-10  ipad:flex rtl:space-x-reverse ps-3 ipad-pro:ms-0">
       {% for category in parent_categories %}
-        {% with parent_category = category.name %}
+        {% with parent_category = category.item_group or category.name %}
           {% include "templates/components/category_open_nav.html" %}
         {% endwith %}
       {% endfor %}

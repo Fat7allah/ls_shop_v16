@@ -78,7 +78,7 @@
                     </svg>
                 </button>
                 <!-- Normal Filters (brands, sizes, colors) -->
-                <div x-show="current_tab === key && !Array.isArray(values[0]) && key !== 'Men'&& key !== 'Women' && key !== 'Kids'"
+                <div x-show="current_tab === key && !Array.isArray(values[0]) && !Array.isArray(values)"
                     x-transition class="pt-6 pb-6">
                     <div class="space-y-2">
                         <template x-for="(option, index) in values" :key="index">
@@ -93,84 +93,82 @@
                         </template>
                     </div>
                 </div>
-                <!-- Nested Categories (Men, Women, Kids) -->
+                <!-- Nested Categories (Dynamic from Ecommerce Category) -->
 
-                <template x-for="(category,index) in ['Men','Women','Kids']" :key="index">
-                    <div x-show="current_tab === key && !Array.isArray(values[0]) && key === category" x-transition
-                        class="pt-6 pb-6">
-                        <template x-for="(node, node_index) in values" :key="node_index">
-                            <div class="mb-3">
-                                <div x-data="{ open: false }">
-                                    <!-- Node with children gets an expand/collapse button -->
-                                    <div x-show="!node.is_leaf" class="flex items-center">
-                                        <span class="flex items-center text-gray-800 font-semibold"
-                                            x-text="$store.i18n.t(node.display_name)"></span>
+                <div x-show="current_tab === key && Array.isArray(values) && values.length > 0 && values[0].display_name" x-transition
+                    class="pt-6 pb-6">
+                    <template x-for="(node, node_index) in values" :key="node_index">
+                        <div class="mb-3">
+                            <div x-data="{ open: false }">
+                                <!-- Node with children gets an expand/collapse button -->
+                                <div x-show="!node.is_leaf" class="flex items-center">
+                                    <span class="flex items-center text-gray-800 font-semibold"
+                                        x-text="$store.i18n.t(node.display_name)"></span>
 
-                                    </div>
+                                </div>
 
-                                    <!-- Leaf node gets a checkbox -->
-                                    <div x-show="node.is_leaf" class="flex items-center">
-                                        <input type="checkbox" :id="`${category}-${node_index}`" :value="node.name"
-                                            @change="toggle_filter(key, node.name, true)"
-                                            :checked="is_checked(key, node.name, true)"
-                                            class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                                        <label :for="`${category}-${node_index}`" class="ms-2 text-sm text-gray-700 capitalize"
-                                            x-text="$store.i18n.t(node.display_name)"></label>
-                                    </div>
+                                <!-- Leaf node gets a checkbox -->
+                                <div x-show="node.is_leaf" class="flex items-center">
+                                    <input type="checkbox" :id="`${key}-${node_index}`" :value="node.name"
+                                        @change="toggle_filter(key, node.name, true)"
+                                        :checked="is_checked(key, node.name, true)"
+                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                    <label :for="`${key}-${node_index}`" class="ms-2 text-sm text-gray-700 capitalize"
+                                        x-text="$store.i18n.t(node.display_name)"></label>
+                                </div>
 
-                                    <!-- Recursively render children -->
-                                    <div class="pl-3 mt-2 space-y-2">
-                                        <template x-for="(child, child_index) in node.children" :key="child_index">
-                                            <div x-data="{ childOpen: false }" class="mb-2">
-                                                <!-- Child with its own children -->
+                                <!-- Recursively render children -->
+                                <div class="pl-3 mt-2 space-y-2">
+                                    <template x-for="(child, child_index) in node.children" :key="child_index">
+                                        <div x-data="{ childOpen: false }" class="mb-2">
+                                            <!-- Child with its own children -->
 
-                                                <div x-show="!child.is_leaf" class="flex items-center">
-                                                    <button @click="childOpen = !childOpen"
-                                                        class="flex items-center text-gray-800 font-medium">
-                                                     
-                                                        <span x-text="$store.i18n.t(child.display_name)"></span>
-                                                    </button>
-                                                </div>
-
-                                                <!-- Child leaf node -->
-                                                <div x-show="child.is_leaf" class="flex items-center">
-                                                    <input type="checkbox"
-                                                        :id="`${category}-${node_index}-${child_index}`"
-                                                        :value="child.name"
-                                                        @change="toggle_filter(key, child.name, true)"
-                                                        :checked="is_checked(key, child.name, true)"
-                                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                                                    <label :for="`${category}-${node_index}-${child_index}`"
-                                                        class="ms-2 text-sm text-gray-700 capitalize"
-                                                        x-text="$store.i18n.t(child.display_name)"></label>
-                                                </div>
-
-                                                <!-- Grandchildren (third level) -->
-                                                <div class="pl-3 mt-2 space-y-2">
-                                                    <template x-for="(grandchild, grandchild_index) in child.children"
-                                                        :key="grandchild_index">
-                                                        <div class="flex items-center">
-                                                            <input type="checkbox"
-                                                                :id="`${category}-${node_index}-${child_index}-${grandchild_index}`"
-                                                                :value="grandchild.name"
-                                                                @change="toggle_filter(key, grandchild.name, true)"
-                                                                :checked="is_checked(key, grandchild.name, true)"
-                                                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                                                            <label
-                                                                :for="`${category}-${node_index}-${child_index}-${grandchild_index}`"
-                                                                class="ms-2 text-sm text-gray-700 capitalize"
-                                                                x-text="$store.i18n.t(grandchild.display_name)"></label>
-                                                        </div>
-                                                    </template>
-                                                </div>
+                                            <div x-show="!child.is_leaf" class="flex items-center">
+                                                <button @click="childOpen = !childOpen"
+                                                    class="flex items-center text-gray-800 font-medium">
+                                                 
+                                                    <span x-text="$store.i18n.t(child.display_name)"></span>
+                                                </button>
                                             </div>
-                                        </template>
-                                    </div>
+
+                                            <!-- Child leaf node -->
+                                            <div x-show="child.is_leaf" class="flex items-center">
+                                                <input type="checkbox"
+                                                    :id="`${key}-${node_index}-${child_index}`"
+                                                    :value="child.name"
+                                                    @change="toggle_filter(key, child.name, true)"
+                                                    :checked="is_checked(key, child.name, true)"
+                                                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                                <label :for="`${key}-${node_index}-${child_index}`"
+                                                    class="ms-2 text-sm text-gray-700 capitalize"
+                                                    x-text="$store.i18n.t(child.display_name)"></label>
+                                            </div>
+
+                                            <!-- Grandchildren (third level) -->
+                                            <div class="pl-3 mt-2 space-y-2">
+                                                <template x-for="(grandchild, grandchild_index) in child.children"
+                                                    :key="grandchild_index">
+                                                    <div class="flex items-center">
+                                                        <input type="checkbox"
+                                                            :id="`${key}-${node_index}-${child_index}-${grandchild_index}`"
+                                                            :value="grandchild.name"
+                                                            @change="toggle_filter(key, grandchild.name, true)"
+                                                            :checked="is_checked(key, grandchild.name, true)"
+                                                            class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                                        <label
+                                                            :for="`${key}-${node_index}-${child_index}-${grandchild_index}`"
+                                                            class="ms-2 text-sm text-gray-700 capitalize"
+                                                            x-text="$store.i18n.t(grandchild.display_name)"></label>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
-                        </template>
-                    </div>
-                </template>
+                        </div>
+                    </template>
+                </div>
         </template>
         <div class="border-b border-gray-300">
             <button @click="current_tab = (current_tab === 'price_range') ? null : 'price_range'"
