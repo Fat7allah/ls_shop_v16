@@ -368,7 +368,7 @@ def create_demo_products():
 			"code": "AIR-FILTER",
 			"name": "High-Flow Air Filter",
 			"item_group": "Engine Parts",
-			"brand": "Adidas",
+			"brand": "K&N",
 			"description": "Performance air filter for improved engine airflow and horsepower. Washable and reusable.",
 			"colors": colors_to_use[:2],  # Use up to 2 colors
 			"sizes": sizes_to_use[:3],  # Use up to 3 sizes
