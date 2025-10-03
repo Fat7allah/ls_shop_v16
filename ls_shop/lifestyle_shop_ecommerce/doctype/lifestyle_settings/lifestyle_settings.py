@@ -97,6 +97,32 @@ class LifestyleSettings(Document):
 				"item_group",
 				mapping.ecommerce_item_group,
 			)
+	
+	@frappe.whitelist()
+	def install_demo_data(self):
+		"""Install demo data for testing LS Shop"""
+		from ls_shop.install_demo_data import install_demo_data
+		
+		frappe.enqueue(
+			install_demo_data,
+			queue="long",
+			timeout=3000,
+		)
+		
+		return "Demo data installation has been queued. This may take a few minutes. Check the background jobs for progress."
+	
+	@frappe.whitelist()
+	def publish_all_items(self):
+		"""Publish all items to website"""
+		from ls_shop.publish_demo_items import publish_all_demo_items
+		
+		frappe.enqueue(
+			publish_all_demo_items,
+			queue="default",
+			timeout=600,
+		)
+		
+		return "Publishing all items to website. This may take a moment. Refresh the page after completion."
 
 
 def generate_configurators_for_all_templates(attribute: str, log_name: str):

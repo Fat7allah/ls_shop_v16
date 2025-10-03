@@ -34,6 +34,10 @@
 		"attribute_name_field",
 		"publish_variants_for_all_templates",
 		"view_logs",
+		"demo_data_section",
+		"install_demo_data",
+		"column_break_demo",
+		"publish_all_items",
 		"item_group_section",
 		"ecommerce_item_group_mapping",
 		"sync_item_group_mapping_to_ecommerce_items",
@@ -272,6 +276,25 @@
 			"fieldname": "view_logs",
 			"fieldtype": "Button",
 			"label": "View Logs"
+		},
+		{
+			"fieldname": "demo_data_section",
+			"fieldtype": "Section Break",
+			"label": "Demo Data & Testing"
+		},
+		{
+			"fieldname": "install_demo_data",
+			"fieldtype": "Button",
+			"label": "Install Demo Data"
+		},
+		{
+			"fieldname": "column_break_demo",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "publish_all_items",
+			"fieldtype": "Button",
+			"label": "Publish All Items to Website"
 		}
 	],
 	"index_web_pages_for_search": 1,
