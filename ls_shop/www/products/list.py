@@ -24,9 +24,10 @@ def get_filter_brands(filters=None):
 	query = query.select(item.brand).distinct().orderby(item.brand)
 	brands = query.run(pluck=True)
 	print(brands)
-	if not brands[0]:
+	if not brands:
 		return []
-	brands = [b.title() for b in brands]
+	# Filter out None or empty brand values
+	brands = [b.title() for b in brands if b]
 	return brands
 
 
