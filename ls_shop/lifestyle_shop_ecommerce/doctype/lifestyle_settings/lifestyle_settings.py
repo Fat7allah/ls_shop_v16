@@ -24,11 +24,14 @@ class LifestyleSettings(Document):
 
 		attribute_name_field: DF.Data | None
 		based_on_attribute: DF.Link | None
+		brand_logo: DF.AttachImage | None
 		cc_email: DF.Data | None
 		charge_account_head: DF.Link | None
 		cod_charge: DF.Currency
 		cod_charge_applicable_below: DF.Currency
 		cod_enabled: DF.Check
+		favicon: DF.Attach | None
+		footer_logo: DF.AttachImage | None
 		create_variants_automatically_on_configurator_creation: DF.Check
 		default_price_list: DF.Link | None
 		ecommerce_item_group_mapping: DF.Table[ItemGroupMap]
@@ -42,6 +45,7 @@ class LifestyleSettings(Document):
 		return_period: DF.Int
 		sale_price_list: DF.Link | None
 		shipping_rule: DF.Link | None
+		store_name: DF.Data | None
 		tabby_enabled: DF.Check
 		telr_enabled: DF.Check
 	# end: auto-generated types

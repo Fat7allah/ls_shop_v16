@@ -5,6 +5,13 @@
 	"doctype": "DocType",
 	"engine": "InnoDB",
 	"field_order": [
+		"branding_section",
+		"store_name",
+		"column_break_brand",
+		"brand_logo",
+		"footer_logo",
+		"column_break_favicon",
+		"favicon",
 		"cod_section",
 		"cod_charge_applicable_below",
 		"charge_account_head",
@@ -52,6 +59,43 @@
 		"cc_email"
 	],
 	"fields": [
+		{
+			"fieldname": "branding_section",
+			"fieldtype": "Section Break",
+			"label": "Branding"
+		},
+		{
+			"fieldname": "store_name",
+			"fieldtype": "Data",
+			"label": "Store Name",
+			"description": "Name displayed in browser tab and site title"
+		},
+		{
+			"fieldname": "column_break_brand",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "brand_logo",
+			"fieldtype": "Attach Image",
+			"label": "Brand Logo",
+			"description": "Logo displayed in header navigation"
+		},
+		{
+			"fieldname": "footer_logo",
+			"fieldtype": "Attach Image",
+			"label": "Footer Logo",
+			"description": "Logo displayed in footer"
+		},
+		{
+			"fieldname": "column_break_favicon",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "favicon",
+			"fieldtype": "Attach",
+			"label": "Favicon",
+			"description": "Icon displayed in browser tab (16x16 or 32x32 px)"
+		},
 		{
 			"fieldname": "delivery_section",
 			"fieldtype": "Section Break",
