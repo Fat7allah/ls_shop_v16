@@ -2,39 +2,23 @@
 {% set settings = frappe.get_cached_doc("Lifestyle Settings", "Lifestyle Settings") %}
 {% set footer_logo = settings.footer_logo or "/assets/ls_shop/images/lifestyle.png" %}
 {% set store_name = settings.store_name or "Lifestyle" %}
-{% set my_account_links = [
-    {"label": "Login/register", "url": "#"},
-    {"label": "My account", "url": "#"},
-    {"label": "Orders history", "url": "#"},
-    {"label": "Track my order", "url": "#"},
-    {"label": "Find our store in Saudi Arabia", "url": "#"}
-  ]
-%}
+{% set contact_phone = settings.contact_phone or "920000576" %}
+{% set contact_email = settings.contact_email or "Contact@lifestyle.sa" %}
+{% set working_hours = settings.working_hours or "Sun - Thu / 10.00 AM - 6.00 PM" %}
+{% set newsletter_title = settings.newsletter_title or _('Newsletter sign up') %}
+{% set newsletter_desc = settings.newsletter_description or _('Get all the latest information on Events, Sales and Offers. Sign up for the newsletter today') %}
+{% set copyright_text = settings.copyright_text or store_name + '. All Rights Reserved' %}
+{% set payment_image = settings.payment_methods_image or "/assets/ls_shop/images/payment_method.png" %}
+{% set vat_image = settings.vat_certificate_image or "/assets/ls_shop/images/vat.png" %}
 
-{% set policies_links = [
-    {"label": "Offers policy", "url": "#"},
-    {"label": "Payment policy", "url": "#"},
-    {"label": "Returns policy", "url": "#"},
-    {"label": "Shipping policy", "url": "#"},
-    {"label": "Terms and conditions", "url": "#"},
-    {"label": "Privacy and policy", "url": "#"},
-    {"label": "Promotions", "url": "#"},
-  ] 
-%}
-
-{% set customer_service_links = [
-    {"label": "Sizing charts", "url": "#"},
-    {"label": "FAQ", "url": "#"},
-    {"label": "Contact us", "url": "#"},
-    {"label": "International Shipping", "url": "#"},
-  ] 
-%}
+{# Get footer sections from settings or use defaults #}
+{% set footer_sections = settings.footer_sections if settings.footer_sections else [] %}
 <div class="flex justify-center md:hidden my-9">
   <a href="/">
     <img src="{{ footer_logo }}" alt="{{ store_name }} Logo" class="h-12 w-32 object-contain" />
   </a>
 </div>
-<footer class="bg-gray-900 text-white">
+<footer class="bg-footer text-footer">
   <div class="max-w-7xl mx-auto px-6 md:px-10 mt-14 py-12">
     <!-- Top Logo Section -->
     <div class="hidden items-start justify-start md:flex mb-12">
@@ -45,78 +29,87 @@
   
     <!-- Main Footer Content -->
     <div class="flex flex-col justify-between md:flex-row">
-      <!-- My Account -->
-      {% call macros.collapsible_section("My Account", "order-2 mb-4 md:order-1 md:mb-0 md:w-1/") %}
-        <ul class="list-disc ps-4 text-sm">
-          {% for item in my_account_links %}
-            <li class="mb-2">
-              <a href="{{ item.url }}" class="text-xs text-gray-300 hover:text-white">{{ _(item.label) }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endcall %}
-  
-      <!-- Policies -->
-      {% call macros.collapsible_section("Policies", "order-3 mb-4 md:order-2 md:mb-0 md:w-1/") %}
-        <ul class="list-disc ps-4 text-sm">
-          {% for item in policies_links %}
-            <li class="mb-2">
-              <a href="{{ item.url }}" class="text-xs text-gray-300 hover:text-white">{{ _(item.label) }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endcall %}
-  
-      <!-- Customer Service -->
-      {% call macros.collapsible_section("Customer", "order-4 mb-4 md:order-3 md:mb-0 md:w-1/") %}
-        <ul class="list-disc ps-4 text-sm">
-          {% for item in customer_service_links %}
-            <li class="mb-2">
-              <a href="{{ item.url }}" class="text-xs text-gray-300 hover:text-white">{{ _(item.label) }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endcall %}
+      {% if footer_sections %}
+        {# Dynamic footer sections from settings #}
+        {% for section in footer_sections|sort(attribute='section_order') %}
+          {% if section.enabled %}
+            {% set order_class = "order-" + ((loop.index + 1)|string) %}
+            {% call macros.collapsible_section(_(section.section_title), order_class + " mb-4 md:order-" + (loop.index|string) + " md:mb-0 md:w-1/") %}
+              <ul class="list-disc ps-4 text-sm">
+                {% for link in section.footer_links|sort(attribute='link_order') %}
+                  {% if link.enabled %}
+                    <li class="mb-2">
+                      <a href="{{ link.link_url }}" class="text-xs text-gray-300 hover:text-white">{{ _(link.link_label) }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endcall %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {# Default footer sections if none configured #}
+        {% call macros.collapsible_section(_("My Account"), "order-2 mb-4 md:order-1 md:mb-0 md:w-1/") %}
+          <ul class="list-disc ps-4 text-sm">
+            <li class="mb-2"><a href="/{{frappe.lang}}/account/dashboard" class="text-xs text-gray-300 hover:text-white">{{_('My account')}}</a></li>
+            <li class="mb-2"><a href="/{{frappe.lang}}/account/orders" class="text-xs text-gray-300 hover:text-white">{{_('Orders history')}}</a></li>
+            <li class="mb-2"><a href="/{{frappe.lang}}/account/wishlist" class="text-xs text-gray-300 hover:text-white">{{_('Wishlist')}}</a></li>
+          </ul>
+        {% endcall %}
+        
+        {% call macros.collapsible_section(_("Customer Service"), "order-3 mb-4 md:order-2 md:mb-0 md:w-1/") %}
+          <ul class="list-disc ps-4 text-sm">
+            <li class="mb-2"><a href="#" class="text-xs text-gray-300 hover:text-white">{{_('Contact us')}}</a></li>
+            <li class="mb-2"><a href="#" class="text-xs text-gray-300 hover:text-white">{{_('FAQ')}}</a></li>
+          </ul>
+        {% endcall %}
+      {% endif %}
   
       <!-- Contact Us -->
-      {% call macros.collapsible_section("Contact us", "md:w-1/ order-5 mb-4 md:order-4 md:mb-0") %}
+      {% call macros.collapsible_section(_("Contact us"), "md:w-1/ order-5 mb-4 md:order-" + ((footer_sections|length + 1)|string) + " md:mb-0") %}
+        {% if contact_phone %}
         <div class="me-14 flex items-start border-b border-gray-700 pb-4">
           <div class="h-5 w-5 flex items-center justify-center me-3">
             <img src="/assets/ls_shop/icons/phone.svg" alt="">
           </div>
           <div class="flex flex-col">
             <p class="mb-1 text-xs uppercase">{{_('phone')}}</p>
-            <p class="text-xs text-gray-400">920000576</p>
+            <p class="text-xs text-gray-400">{{ contact_phone }}</p>
           </div>
         </div>
+        {% endif %}
     
+        {% if contact_email %}
         <div class="me-14 flex items-start border-b border-gray-700 py-4">
           <div class="h-5 w-5 flex items-center justify-center me-3">
             <img src="/assets/ls_shop/icons/mail.svg" alt="">
           </div>
           <div class="flex flex-col">
             <p class="mb-1 text-xs uppercase">{{_('email')}}</p>
-            <p class="text-xs text-gray-400">Contact@lifestyle.sa</p>
+            <p class="text-xs text-gray-400">{{ contact_email }}</p>
           </div>
         </div>
+        {% endif %}
     
+        {% if working_hours %}
         <div class="flex items-start py-4">
           <div class="h-5 w-5 flex items-center justify-center me-3">
             <img src="/assets/ls_shop/icons/clock.svg" alt="">
           </div>
           <div class="flex flex-col">
             <p class="mb-1 text-xs uppercase">{{_('working days/hours')}}</p>
-            <p class="text-xs text-gray-400">Sun - Thu / 10.00 AM - 6.00 PM</p>
+            <p class="text-xs text-gray-400">{{ working_hours }}</p>
           </div>
         </div>
+        {% endif %}
       {% endcall %}
   
       <!-- Newsletter Sign Up -->
       <div
-        class="order-1 mt-12 mb-4 border-b border-gray-700 pb-6 decoration-1 md:order-5 md:mt-0 md:w-1/5 md:border-0 md:pb-0">
-        <h3 class="py-3 text-sm">{{_('Newsletter sign up')}}</h3>
+        class="order-1 mt-12 mb-4 border-b border-gray-700 pb-6 decoration-1 md:order-{{ footer_sections|length + 2 }} md:mt-0 md:w-1/5 md:border-0 md:pb-0">
+        <h3 class="py-3 text-sm">{{ newsletter_title }}</h3>
         <p class="me-8 mb-4 pt-4 text-xs text-gray-400">
-          {{_('Get all the latest information on Events, Sales and Offers. Sign up for the newsletter today')}}.
+          {{ newsletter_desc }}.
         </p>
         <form class="w-full">
           <div class="me-8 flex max-w-full">
@@ -135,14 +128,14 @@
     <!-- Bottom Bar -->
     <div class="mt-8 flex flex-col-reverse items-center justify-between border-t border-gray-700 pt-10 pb-15 md:flex-row">
       <div class="mb-12 flex space-x-4 md:mb-0">
-        <img src="/assets/ls_shop/images/payment_method.png" alt="Payment Icons" class="h-6" />
+        <img src="{{ payment_image }}" alt="Payment Icons" class="h-6" />
       </div>
       <div class="mb-12 flex flex-col text-center text-[10px] text-gray-400 md:mb-0 md:flex-row">
-        <img src="/assets/ls_shop/images/vat.png" alt="" class="me-4 mb-4 h-9 w-auto object-contain md:mb-0" />
+        {% if vat_image %}
+        <img src="{{ vat_image }}" alt="VAT Certificate" class="me-4 mb-4 h-9 w-auto object-contain md:mb-0" />
+        {% endif %}
         <div class="flex flex-col items-start">
-          <p>&copy; {{ frappe.utils.getdate().year }} {{_('Lifestyle. All Rights Reserved')}}</p>
-
-
+          <p>&copy; {{ frappe.utils.getdate().year }} {{ _(copyright_text) }}</p>
         </div>
       </div>
       {% include "templates/includes/social_links.html" %}

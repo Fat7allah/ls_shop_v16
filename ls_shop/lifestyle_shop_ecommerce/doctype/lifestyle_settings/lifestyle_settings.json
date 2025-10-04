@@ -45,6 +45,44 @@
 		"install_demo_data",
 		"column_break_demo",
 		"publish_all_items",
+		"contact_information_tab",
+		"contact_phone",
+		"column_break_contact",
+		"contact_email",
+		"working_hours",
+		"social_media_tab",
+		"facebook_url",
+		"twitter_url",
+		"column_break_social",
+		"instagram_url",
+		"snapchat_url",
+		"column_break_social2",
+		"tiktok_url",
+		"footer_customization_tab",
+		"newsletter_title",
+		"column_break_newsletter",
+		"newsletter_description",
+		"section_break_footer_assets",
+		"payment_methods_image",
+		"column_break_footer_assets",
+		"vat_certificate_image",
+		"section_break_copyright",
+		"copyright_text",
+		"section_break_footer_sections",
+		"footer_sections",
+		"color_scheme_tab",
+		"primary_color",
+		"primary_hover_color",
+		"column_break_colors1",
+		"link_color",
+		"link_hover_color",
+		"column_break_colors2",
+		"accent_color",
+		"border_accent_color",
+		"section_break_footer_colors",
+		"footer_bg_color",
+		"column_break_footer_colors",
+		"footer_text_color",
 		"item_group_section",
 		"ecommerce_item_group_mapping",
 		"sync_item_group_mapping_to_ecommerce_items",
@@ -257,6 +295,203 @@
 			"fieldname": "item_group_section",
 			"fieldtype": "Section Break",
 			"label": "Item Group"
+		},
+		{
+			"fieldname": "contact_information_tab",
+			"fieldtype": "Tab Break",
+			"label": "Contact Information"
+		},
+		{
+			"fieldname": "contact_phone",
+			"fieldtype": "Data",
+			"label": "Contact Phone"
+		},
+		{
+			"fieldname": "column_break_contact",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "contact_email",
+			"fieldtype": "Data",
+			"label": "Contact Email",
+			"options": "Email"
+		},
+		{
+			"fieldname": "working_hours",
+			"fieldtype": "Data",
+			"label": "Working Hours"
+		},
+		{
+			"fieldname": "social_media_tab",
+			"fieldtype": "Tab Break",
+			"label": "Social Media"
+		},
+		{
+			"fieldname": "facebook_url",
+			"fieldtype": "Data",
+			"label": "Facebook URL",
+			"options": "URL"
+		},
+		{
+			"fieldname": "twitter_url",
+			"fieldtype": "Data",
+			"label": "Twitter/X URL",
+			"options": "URL"
+		},
+		{
+			"fieldname": "column_break_social",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "instagram_url",
+			"fieldtype": "Data",
+			"label": "Instagram URL",
+			"options": "URL"
+		},
+		{
+			"fieldname": "snapchat_url",
+			"fieldtype": "Data",
+			"label": "Snapchat URL",
+			"options": "URL"
+		},
+		{
+			"fieldname": "column_break_social2",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "tiktok_url",
+			"fieldtype": "Data",
+			"label": "TikTok URL",
+			"options": "URL"
+		},
+		{
+			"fieldname": "footer_customization_tab",
+			"fieldtype": "Tab Break",
+			"label": "Footer Customization"
+		},
+		{
+			"fieldname": "newsletter_title",
+			"fieldtype": "Data",
+			"label": "Newsletter Title"
+		},
+		{
+			"fieldname": "column_break_newsletter",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "newsletter_description",
+			"fieldtype": "Text",
+			"label": "Newsletter Description"
+		},
+		{
+			"fieldname": "section_break_footer_assets",
+			"fieldtype": "Section Break",
+			"label": "Footer Assets"
+		},
+		{
+			"fieldname": "payment_methods_image",
+			"fieldtype": "Attach Image",
+			"label": "Payment Methods Image"
+		},
+		{
+			"fieldname": "column_break_footer_assets",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "vat_certificate_image",
+			"fieldtype": "Attach Image",
+			"label": "VAT Certificate Image"
+		},
+		{
+			"fieldname": "section_break_copyright",
+			"fieldtype": "Section Break",
+			"label": "Copyright & Legal"
+		},
+		{
+			"fieldname": "copyright_text",
+			"fieldtype": "Data",
+			"label": "Copyright Text"
+		},
+		{
+			"fieldname": "section_break_footer_sections",
+			"fieldtype": "Section Break",
+			"label": "Footer Sections"
+		},
+		{
+			"fieldname": "footer_sections",
+			"fieldtype": "Table",
+			"label": "Footer Sections",
+			"options": "Footer Section Config"
+		},
+		{
+			"fieldname": "color_scheme_tab",
+			"fieldtype": "Tab Break",
+			"label": "Color Scheme"
+		},
+		{
+			"default": "#b91c1c",
+			"fieldname": "primary_color",
+			"fieldtype": "Color",
+			"label": "Primary Color"
+		},
+		{
+			"default": "#991b1b",
+			"fieldname": "primary_hover_color",
+			"fieldtype": "Color",
+			"label": "Primary Hover Color"
+		},
+		{
+			"fieldname": "column_break_colors1",
+			"fieldtype": "Column Break"
+		},
+		{
+			"default": "#7f1d1d",
+			"fieldname": "link_color",
+			"fieldtype": "Color",
+			"label": "Link Color"
+		},
+		{
+			"default": "#991b1b",
+			"fieldname": "link_hover_color",
+			"fieldtype": "Color",
+			"label": "Link Hover Color"
+		},
+		{
+			"fieldname": "column_break_colors2",
+			"fieldtype": "Column Break"
+		},
+		{
+			"default": "#b91c1c",
+			"fieldname": "accent_color",
+			"fieldtype": "Color",
+			"label": "Accent Color"
+		},
+		{
+			"default": "#b91c1c",
+			"fieldname": "border_accent_color",
+			"fieldtype": "Color",
+			"label": "Border Accent Color"
+		},
+		{
+			"fieldname": "section_break_footer_colors",
+			"fieldtype": "Section Break",
+			"label": "Footer Colors"
+		},
+		{
+			"default": "#111827",
+			"fieldname": "footer_bg_color",
+			"fieldtype": "Color",
+			"label": "Footer Background Color"
+		},
+		{
+			"fieldname": "column_break_footer_colors",
+			"fieldtype": "Column Break"
+		},
+		{
+			"default": "#ffffff",
+			"fieldname": "footer_text_color",
+			"fieldtype": "Color",
+			"label": "Footer Text Color"
 		},
 		{
 			"fieldname": "ecommerce_item_group_mapping",

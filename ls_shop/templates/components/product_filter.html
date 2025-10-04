@@ -59,7 +59,7 @@
         <h2 class="mb-4 text-lg font-medium capitalize">
             {{_('filter by')}}
         </h2>
-        <button class="mb-4 text-lg font-medium text-red-800 hover:text-red-600 cursor-pointer capitalize" @click="reset_filters">
+        <button class="mb-4 text-lg font-medium text-primary hover:text-red-600 cursor-pointer capitalize" @click="reset_filters">
             {{_('reset all')}}
         </button>
     </div>
@@ -256,11 +256,11 @@
         </div>
         <div class="mt-15 flex items-center justify-between gap-3 md:hidden">
             <button @click="reset_filters"
-                class="w-full rounded-lg border border-red-800 p-2 px-3 text-lg font-medium text-red-800 hover:bg-red-800 hover:text-white capitalize">
+                class="w-full rounded-lg border border-red-800 p-2 px-3 text-lg font-medium text-primary hover:bg-primary hover:text-white capitalize">
                 {{_('reset all')}}
             </button>
             <button
-                class="transition-easein w-full rounded-lg border bg-red-800 p-2 px-3 text-lg font-medium text-white duration-300 hover:bg-red-900 capitalize"
+                class="transition-easein w-full rounded-lg border bg-primary p-2 px-3 text-lg font-medium text-white duration-300 hover:bg-primary-hover capitalize"
                 @click="apply_filters">
                 {{_('apply filters')}}
             </button>

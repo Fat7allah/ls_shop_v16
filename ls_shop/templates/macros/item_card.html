@@ -47,7 +47,7 @@
         {# Discount Badge #}
         {% if discount %}
             <div class="absolute start-3 top-3 z-40">
-                <span class="rounded bg-red-800 px-2 py-1 text-xs font-normal text-white">
+                <span class="rounded bg-accent px-2 py-1 text-xs font-normal text-white">
                     {{ discount|round|int }}% {{ _('off') }}
                 </span>
             </div>
@@ -85,7 +85,7 @@
     </div>
 
     {# Product Details #}
-    <h3 class="mt-6 font-medium text-red-900 {{  current_variant.brand_size  }}" title="{{_(brand|title)}}">
+    <h3 class="mt-6 font-medium text-link {{  current_variant.brand_size  }}" title="{{_(brand|title)}}">
         {{_(brand|title)}}
     </h3>
     <h4 class="{{ current_variant.product_name_size }}" title="{{_(product_name|title)}}">
@@ -98,7 +98,7 @@
     </h4>
     <p class="{{ current_variant.price_size }} flex">
         {% if discount %}
-        <span class="me-2 text-red-900 line-through decoration-[1px] flex ">{{get_currency_symbol()}}{{ "%.2f"|format(original_price or 0)}}</span>
+        <span class="me-2 text-link line-through decoration-[1px] flex ">{{get_currency_symbol()}}{{ "%.2f"|format(original_price or 0)}}</span>
         {% endif %}
         <span class="font-semibold flex">{{get_currency_symbol()}}{{"%.2f"|format(formatted_price or 0) }}</span>
     </p>

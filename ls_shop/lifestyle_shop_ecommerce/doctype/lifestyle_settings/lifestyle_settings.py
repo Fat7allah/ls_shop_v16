@@ -15,6 +15,9 @@ class LifestyleSettings(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		from ls_shop.lifestyle_shop_ecommerce.doctype.footer_section_config.footer_section_config import (
+			FooterSectionConfig,
+		)
 		from ls_shop.lifestyle_shop_ecommerce.doctype.item_group_map.item_group_map import (
 			ItemGroupMap,
 		)
@@ -22,16 +25,38 @@ class LifestyleSettings(Document):
 			ReturnReason,
 		)
 
+		accent_color: DF.Color | None
 		attribute_name_field: DF.Data | None
 		based_on_attribute: DF.Link | None
+		border_accent_color: DF.Color | None
 		brand_logo: DF.AttachImage | None
 		cc_email: DF.Data | None
 		charge_account_head: DF.Link | None
 		cod_charge: DF.Currency
 		cod_charge_applicable_below: DF.Currency
 		cod_enabled: DF.Check
+		contact_email: DF.Data | None
+		contact_phone: DF.Data | None
+		copyright_text: DF.Data | None
+		facebook_url: DF.Data | None
 		favicon: DF.Attach | None
+		footer_bg_color: DF.Color | None
 		footer_logo: DF.AttachImage | None
+		footer_sections: DF.Table[FooterSectionConfig]
+		footer_text_color: DF.Color | None
+		instagram_url: DF.Data | None
+		link_color: DF.Color | None
+		link_hover_color: DF.Color | None
+		newsletter_description: DF.Text | None
+		newsletter_title: DF.Data | None
+		payment_methods_image: DF.AttachImage | None
+		primary_color: DF.Color | None
+		primary_hover_color: DF.Color | None
+		snapchat_url: DF.Data | None
+		tiktok_url: DF.Data | None
+		twitter_url: DF.Data | None
+		vat_certificate_image: DF.AttachImage | None
+		working_hours: DF.Data | None
 		create_variants_automatically_on_configurator_creation: DF.Check
 		default_price_list: DF.Link | None
 		ecommerce_item_group_mapping: DF.Table[ItemGroupMap]
@@ -127,6 +152,45 @@ class LifestyleSettings(Document):
 		)
 		
 		return "Publishing all items to website. This may take a moment. Refresh the page after completion."
+	
+	def generate_theme_css(self):
+		"""Generate CSS custom properties from color scheme settings"""
+		return f"""
+		<style>
+		:root {{
+			--ls-primary: {self.primary_color or '#b91c1c'};
+			--ls-primary-hover: {self.primary_hover_color or '#991b1b'};
+			--ls-link: {self.link_color or '#7f1d1d'};
+			--ls-link-hover: {self.link_hover_color or '#991b1b'};
+			--ls-accent: {self.accent_color or '#b91c1c'};
+			--ls-border-accent: {self.border_accent_color or '#b91c1c'};
+			--ls-footer-bg: {self.footer_bg_color or '#111827'};
+			--ls-footer-text: {self.footer_text_color or '#ffffff'};
+		}}
+		
+		/* Primary color utilities */
+		.bg-primary {{ background-color: var(--ls-primary) !important; }}
+		.text-primary {{ color: var(--ls-primary) !important; }}
+		.border-primary {{ border-color: var(--ls-primary) !important; }}
+		.hover\\:bg-primary-hover:hover {{ background-color: var(--ls-primary-hover) !important; }}
+		.hover\\:text-primary-hover:hover {{ color: var(--ls-primary-hover) !important; }}
+		.focus\\:border-primary:focus {{ border-color: var(--ls-primary) !important; }}
+		
+		/* Link color utilities */
+		.text-link {{ color: var(--ls-link) !important; }}
+		.hover\\:text-link-hover:hover {{ color: var(--ls-link-hover) !important; }}
+		
+		/* Accent color utilities */
+		.bg-accent {{ background-color: var(--ls-accent) !important; }}
+		.text-accent {{ color: var(--ls-accent) !important; }}
+		.border-accent {{ border-color: var(--ls-border-accent) !important; }}
+		.hover\\:bg-accent:hover {{ background-color: var(--ls-accent) !important; }}
+		
+		/* Footer utilities */
+		.bg-footer {{ background-color: var(--ls-footer-bg) !important; }}
+		.text-footer {{ color: var(--ls-footer-text) !important; }}
+		</style>
+		"""
 
 
 def generate_configurators_for_all_templates(attribute: str, log_name: str):
