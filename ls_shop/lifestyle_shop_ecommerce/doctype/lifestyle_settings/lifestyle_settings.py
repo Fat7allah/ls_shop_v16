@@ -15,8 +15,8 @@ class LifestyleSettings(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		from ls_shop.lifestyle_shop_ecommerce.doctype.footer_section_config.footer_section_config import (
-			FooterSectionConfig,
+		from ls_shop.lifestyle_shop_ecommerce.doctype.footer_section_mapping.footer_section_mapping import (
+			FooterSectionMapping,
 		)
 		from ls_shop.lifestyle_shop_ecommerce.doctype.item_group_map.item_group_map import (
 			ItemGroupMap,
@@ -42,7 +42,7 @@ class LifestyleSettings(Document):
 		favicon: DF.Attach | None
 		footer_bg_color: DF.Color | None
 		footer_logo: DF.AttachImage | None
-		footer_sections: DF.Table[FooterSectionConfig]
+		footer_sections: DF.Table[FooterSectionMapping]
 		footer_text_color: DF.Color | None
 		instagram_url: DF.Data | None
 		link_color: DF.Color | None

@@ -1,36 +1,22 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:section_title",
- "creation": "2025-10-04 19:13:28.685267",
+ "creation": "2025-10-05 17:17:00.000000",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_section",
-  "section_title",
-  "column_break_section",
+  "footer_section",
   "section_order",
-  "enabled",
-  "section_break_links",
-  "footer_links"
+  "enabled"
  ],
  "fields": [
   {
-   "fieldname": "section_section",
-   "fieldtype": "Section Break",
-   "label": "Section"
-  },
-  {
-   "fieldname": "section_title",
-   "fieldtype": "Data",
+   "fieldname": "footer_section",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Section Title",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "column_break_section",
-   "fieldtype": "Column Break"
+   "label": "Footer Section",
+   "options": "Footer Section Config",
+   "reqd": 1
   },
   {
    "default": "0",
@@ -45,27 +31,15 @@
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Enabled"
-  },
-  {
-   "fieldname": "section_break_links",
-   "fieldtype": "Section Break",
-   "label": "Links"
-  },
-  {
-   "fieldname": "footer_links",
-   "fieldtype": "Table",
-   "label": "Footer Links",
-   "options": "Footer Link"
   }
  ],
- "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "istable": 1,
  "links": [],
- "modified": "2025-10-05 19:23:26.779649",
+ "modified": "2025-10-05 17:17:00.000000",
  "modified_by": "Administrator",
  "module": "Lifestyle Shop Ecommerce",
- "name": "Footer Section Config",
- "naming_rule": "By fieldname",
+ "name": "Footer Section Mapping",
  "owner": "Administrator",
  "permissions": [
   {
@@ -109,10 +83,7 @@
    "role": "All"
   }
  ],
- "row_format": "Dynamic",
- "rows_threshold_for_grid_search": 20,
  "sort_field": "section_order",
  "sort_order": "ASC",
- "states": [],
- "title_field": "section_title"
+ "states": []
 }
