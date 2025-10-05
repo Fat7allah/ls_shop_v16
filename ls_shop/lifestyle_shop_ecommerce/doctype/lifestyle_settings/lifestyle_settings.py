@@ -164,6 +164,11 @@ class LifestyleSettings(Document):
 			--ls-link-hover: {self.link_hover_color or '#991b1b'};
 			--ls-accent: {self.accent_color or '#b91c1c'};
 			--ls-border-accent: {self.border_accent_color or '#b91c1c'};
+			--ls-button-bg: {self.button_bg_color or '#b91c1c'};
+			--ls-strikethrough: {self.strikethrough_color or '#b91c1c'};
+			--ls-badge-bg: {self.badge_bg_color or '#b91c1c'};
+			--ls-heading-accent: {self.heading_accent_color or '#991b1b'};
+			--ls-brand-text: {self.brand_text_color or '#b91c1c'};
 			--ls-footer-bg: {self.footer_bg_color or '#111827'};
 			--ls-footer-text: {self.footer_text_color or '#ffffff'};
 		}}
@@ -186,6 +191,13 @@ class LifestyleSettings(Document):
 		.border-accent {{ border-color: var(--ls-border-accent) !important; }}
 		.hover\\:bg-accent:hover {{ background-color: var(--ls-accent) !important; }}
 		
+		/* UI Element utilities */
+		.bg-button {{ background-color: var(--ls-button-bg) !important; }}
+		.text-strikethrough {{ color: var(--ls-strikethrough) !important; }}
+		.bg-badge {{ background-color: var(--ls-badge-bg) !important; }}
+		.text-heading-accent {{ color: var(--ls-heading-accent) !important; }}
+		.text-brand {{ color: var(--ls-brand-text) !important; }}
+
 		/* Footer utilities */
 		.bg-footer {{ background-color: var(--ls-footer-bg) !important; }}
 		.text-footer {{ color: var(--ls-footer-text) !important; }}

@@ -82,7 +82,7 @@
                     <!-- Disounted price -->
                     {% if discount_percent %}
                     <span
-                        class="text-base font-normal text-red-900 line-through decoration-[1px] md:text-xl flex">{{get_currency_symbol()}}{{"%.2f"|format(default_price)}}</span>
+                        class="text-base font-normal text-strikethrough line-through decoration-[1px] md:text-xl flex">{{get_currency_symbol()}}{{"%.2f"|format(default_price)}}</span>
                     {% endif %}
                     <span
                         class="ms-2 text-base font-medium text-gray-900 md:text-xl md:font-medium flex">{{get_currency_symbol()}}{{"%.2f"|format(selected_price)}}</span>
@@ -164,7 +164,7 @@
                 {% endif %}
                 <div x-data="{ is_open: false }">
                     <button
-                        class="mt-7 flex w-full items-center justify-between rounded-md bg-red-900 px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-red-900 focus:outline-none cursor-pointer disabled:opacity-75 disabled:pointer-events-none"
+                        class="mt-7 flex w-full items-center justify-between rounded-md bg-button px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-red-900 focus:outline-none cursor-pointer disabled:opacity-75 disabled:pointer-events-none"
                         @click="
                                     if (selected_variant) {
                                         $store.cart.add(product, selected_variant, price,default_price, brand,sizes,qty);
