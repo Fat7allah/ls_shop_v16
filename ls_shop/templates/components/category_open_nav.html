@@ -28,25 +28,25 @@
                 <!-- Tabs navigation -->
                 <div class="flex border-b border-gray-200">
                     <a href="/{{frappe.lang}}/products?search={{parent_category | urlencode}}&category={{parent_category | urlencode}}" 
-                        :class="{ 'border-b-2 border-red-700 text-red-700': activeTab === 'New Arrival', 'text-gray-600': activeTab !== 'New Arrival' }"
-                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-red-900 capitalize">
+                        :class="{ 'border-b-2 border-accent text-accent': activeTab === 'New Arrival', 'text-gray-600': activeTab !== 'New Arrival' }"
+                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-accent capitalize">
                         {{_('new arrival')}}
                 </a>
                     {% for item_category in item_categories %}
                     <a href="/{{frappe.lang}}/products?search={{item_category.name | urlencode}}&category={{parent_category | urlencode}}"  @mouseenter="activeTab = '{{item_category.name}}'"
-                        :class="{ 'border-b-2 border-red-700 text-red-700': activeTab === '{{item_category.name}}', 'text-gray-600': activeTab !== '{{item_category.name}}' }"
-                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-red-900 capitalize">
+                        :class="{ 'border-b-2 border-accent text-accent': activeTab === '{{item_category.name}}', 'text-gray-600': activeTab !== '{{item_category.name}}' }"
+                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-accent capitalize">
                         {{_(item_category.custom_item_group_display_name or item_category.name)}}
             </a>
                     {% endfor %}
                     <a href="/{{frappe.lang}}/products?search={{parent_category | urlencode}}&category={{parent_category | urlencode}}&has_discount=1&sort_by=discount"
-                        :class="{ 'border-b-2 border-red-700 text-red-700': activeTab === 'view-all', 'text-gray-600': activeTab !== 'view-all' }"
-                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-red-900 capitalize">
+                        :class="{ 'border-b-2 border-accent text-accent': activeTab === 'view-all', 'text-gray-600': activeTab !== 'view-all' }"
+                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-accent capitalize">
                         {{_('sale')}}
                     </a>
                     <a href="/{{frappe.lang}}/products?search={{parent_category | urlencode}}&category={{parent_category | urlencode}}"
-                        :class="{ 'border-b-2 border-red-700 text-red-700': activeTab === 'view-all', 'text-gray-600': activeTab !== 'view-all' }"
-                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-red-900">
+                        :class="{ 'border-b-2 border-accent text-accent': activeTab === 'view-all', 'text-gray-600': activeTab !== 'view-all' }"
+                        class="px-5 py-4 font-medium text-sm focus:outline-none hover:text-accent">
                         {{_('View all')}} {{_(parent_category)}}
                     </a>
                 </div>
@@ -65,7 +65,7 @@
                         <div class="w-1/5 pr-8 ">
                             <div>
                                 <a href='/{{frappe.lang}}/products?search={{item_subcategory.name or ''}}&category={{parent_category  or ''}}'
-                                    class="text-base font-medium text-red-900 mb-5 block">{{_('Shop by')}}
+                                    class="text-base font-medium text-accent mb-5 block">{{_('Shop by')}}
                                     {{_(item_subcategory.custom_item_group_display_name)}}</a>
                                 <ul class="grid grid-cols-1 w-full gap-x-4">
                                     <!-- This will be dynamically populated -->
@@ -76,7 +76,7 @@
                                     {% for item in items %}
                                     <li class="mb-2">
                                         <a href='/{{frappe.lang}}/products?subcategory={{item.name | urlencode}}&category={{parent_category | urlencode}}'
-                                            class="text-gray-600 hover:text-red-900 flex items-center">
+                                            class="text-gray-600 hover:text-accent flex items-center">
                                             <div class="h-4 w-4 flex justify-center items-center me-2">
                                                 <img src="/assets/ls_shop/icons/arrow-right.svg" alt="">
                                             </div>
@@ -96,7 +96,7 @@
                         <div class="w-1/4 pr-8 ">
 
                             <div>
-                                <h3 class="text-base font-medium text-red-900 mb-5">{{_('Shop by Product')}}</h3>
+                                <h3 class="text-base font-medium text-accent mb-5">{{_('Shop by Product')}}</h3>
                                 <ul class="grid grid-cols-1 w-full gap-x-4">
                                     <!-- This will be dynamically populated -->
                                     {% set item_subcategories = frappe.get_all('Item Group',
@@ -106,7 +106,7 @@
                                     {% for item_subcategory in item_subcategories %}
                                     <li class="mb-2">
                                         <a href='/{{frappe.lang}}/products?subcategory={{item_subcategory.name | urlencode}}&category={{parent_category | urlencode}}'
-                                            class="text-gray-600 hover:text-red-900 flex items-center">
+                                            class="text-gray-600 hover:text-accent flex items-center">
                                             <div class="h-4 w-4 flex justify-center items-center me-2">
                                                 <img src="/assets/ls_shop/icons/arrow-right.svg" alt="">
                                             </div>

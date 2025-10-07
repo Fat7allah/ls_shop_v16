@@ -33,7 +33,7 @@
                         item_category.name,'custom_display_on_website':True},fields=["name","custom_item_group_display_name"],order_by="custom_item_group_display_name")
                         %}
                         {% for item_subcategory in item_subcategories %}
-                        <a href='/{{frappe.lang}}/products?search={{item_subcategory.name or ''}}&category={{parent_category  or ''}}' class="font-medium text-red-900 mb-3 text-sm block">{{_('Shop by')}}
+                        <a href='/{{frappe.lang}}/products?search={{item_subcategory.name or ''}}&category={{parent_category  or ''}}' class="font-medium text-accent mb-3 text-sm block">{{_('Shop by')}}
                             {{_(item_subcategory.custom_item_group_display_name)}}</a>
                         <ul>
                             {% with items = frappe.get_all('Item Group',
@@ -66,7 +66,7 @@
                         {% endfor %}
                         {% endwith %}
                         {% else %}
-                        <h4 class="font-medium text-red-900 mb-3 text-sm">{{_('Shop by category')}}</h4>
+                        <h4 class="font-medium text-accent mb-3 text-sm">{{_('Shop by category')}}</h4>
                         <ul>
                             {% set item_subcategories = frappe.get_all('Item Group', filters={'parent_item_group':
                             item_category.name ,'custom_display_on_website':True},fields=["name","custom_item_group_display_name"]) %}
