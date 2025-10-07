@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="flex gap-1">
                                     <template x-if="product.default_price && product.discount_percent">
-                                        <p class="text-base font-medium line-through text-red-900 me-2 flex">
+                                        <p class="text-base font-medium line-through text-accent me-2 flex">
 											{{get_currency_symbol()}}<span x-text="product.default_price.toFixed(2)"></span> 
 										</p>
                                     </template>

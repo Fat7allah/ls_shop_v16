@@ -11,7 +11,7 @@
                 <div class="ipad:border-b ipad:border-gray-300 flex items-center text-sm">
                     {{icon('arrow-left',classes='rotate-180 size-4 me-1')}}
                     <button class="flex w-full items-center justify-between font-medium cursor-pointer my-3 
-                            {% if is_active %}text-red-800 font-bold{% else %}hover:text-red-800{% endif %}">
+                            {% if is_active %}text-secondary-accent font-bold{% else %}hover:text-secondary-accent{% endif %}">
                         <span>{{_(page)}}</span>
                     </button>
                 </div>
@@ -22,7 +22,7 @@
             <div class="ipad:border-b ipad:border-gray-300 flex items-center text-sm">
                 {{icon('arrow-left',classes='rotate-180 size-4 me-1')}}
                 <button class="flex w-full items-center justify-between font-medium cursor-pointer my-3 
-                        {% if is_active %}text-red-800 font-bold{% else %}hover:text-red-800{% endif %}">
+                        {% if is_active %}text-secondary-accent font-bold{% else %}hover:text-secondary-accent{% endif %}">
                     <span>{{_("Wishlist")}}</span>
                 </button>
             </div>

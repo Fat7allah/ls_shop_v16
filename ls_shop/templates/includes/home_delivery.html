@@ -1,8 +1,8 @@
 <div class="flex justify-between items-center border-b border-gray-200 pb-4 mt-6">
-    <h2 class="text-lg font-semibold text-red-800">
+    <h2 class="text-lg font-semibold text-secondary-accent">
         {{ _('Billing details') }}
     </h2>
-    <h3 class="text-sm text-red-800 hover:text-red-900 font-semibold ms-2 cursor-pointer" x-show="!show_billing_state"
+    <h3 class="text-sm text-secondary-accent hover:text-accent font-semibold ms-2 cursor-pointer" x-show="!show_billing_state"
         x-cloak @click="show_billing_state = true;
         billing_address_filled = false;
         payment_mode_confirmed = false " x-collapse.duration.300ms x-transition:enter="ease-out duration-200"
