@@ -342,7 +342,7 @@
         </span>{{get_currency_symbol()}} <span x-text="checkout_total.toFixed(2)"></span> 
         </h2>
         <div>
-            {% call modal.modal(button_text='View Items',button_classes='text-sm text-red-900 font-semibold ms-2',
+            {% call modal.modal(button_text='View Items',button_classes='text-sm text-accent font-semibold ms-2',
             modal_header='Your Cart') %}
             <div class="p-6">
                 {% with tabby_selector="tabby-promo-mobile" %}
@@ -356,14 +356,14 @@
         <div class="flex-1" x-data="billing_state()">
             <form x-ref="checkout_form" @submit.prevent="update_quotation_address($data, $refs)">
                 <div class="flex justify-between items-center border-b border-gray-200 pb-4">
-                    <h2 class="text-lg font-semibold text-red-800 capitalize">
+                    <h2 class="text-lg font-semibold text-secondary-accent capitalize">
                         {{ _('select delivery option') }}
                     </h2>
                 </div>
                 <div class="mt-4 gap-4 flex flex-col md:flex-row justify-between">
                     <label
                         class="flex flex-1 items-center p-3 space-x-3 bg-white border rounded-lg hover:bg-gray-50 border-gray-200/70 cursor-pointer"
-                        :class="{'border-red-800': delivery_option === 'home_delivery'}" @click="billing_address_filled = false;
+                        :class="{'border-secondary-accent': delivery_option === 'home_delivery'}" @click="billing_address_filled = false;
                         show_billing_state = true;
                         payment_mode_confirmed = false;
                         errors={};">
@@ -375,7 +375,7 @@
                     </label>
                     <label
                         class="flex flex-1 items-center p-3 space-x-3 bg-white border rounded-lg hover:bg-gray-50 border-gray-200/70 cursor-pointer"
-                        :class="{'border-red-800': delivery_option === 'store_pickup'}" @click="billing_address_filled = false;
+                        :class="{'border-secondary-accent': delivery_option === 'store_pickup'}" @click="billing_address_filled = false;
                         show_pickup_state = true;
                         payment_mode_confirmed = false;
                         errors={};">
@@ -392,10 +392,10 @@
                     x-transition:enter-start="opacity-0 transform -translate-y-4"
                     x-transition:enter-end="opacity-100 transform translate-y-0" x-cloak>
                     <div class="flex justify-between items-center border-b border-gray-200 pb-4 mt-6">
-                        <h2 class="text-lg font-semibold text-red-800 capitalize">
+                        <h2 class="text-lg font-semibold text-secondary-accent capitalize">
                             {{ _('billing details') }}
                         </h2>
-                        <h3 class="text-sm text-red-800 hover:text-red-900 font-semibold ms-2 cursor-pointer"
+                        <h3 class="text-sm text-secondary-accent hover:text-accent font-semibold ms-2 cursor-pointer"
                             x-show="!show_pickup_state" x-cloak @click="show_pickup_state = true;
                             billing_address_filled = false;
                             payment_mode_confirmed = false " x-collapse.duration.300ms
@@ -433,7 +433,7 @@
                     x-show="delivery_option === 'home_delivery' && show_billing_state === true || delivery_option === 'store_pickup' && show_pickup_state === true "
                     x-transition>
                     <button type="submit"
-                        class="w-full flex items-center justify-center rounded-md bg-red-900 px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-red-900 focus:outline-none cursor-pointer text-center disabled:opacity-70 disabled:cursor-not-allowed"
+                        class="w-full flex items-center justify-center rounded-md bg-accent px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-focus focus:outline-none cursor-pointer text-center disabled:opacity-70 disabled:cursor-not-allowed"
                         :disabled="address_loading">
                         {{_('Continue')}}
                         <div class="animate-spin inline-block size-5 border-3 border-current border-t-transparent rounded-full ms-2"
@@ -444,7 +444,7 @@
             </form>
             <template x-if="billing_address_filled">
                 <div class="space-y-10">
-                    <h2 class="text-lg font-semibold text-red-800 border-b border-gray-200 pb-4 my-5">{{ _("Payment method") }}</h2>
+                    <h2 class="text-lg font-semibold text-secondary-accent border-b border-gray-200 pb-4 my-5">{{ _("Payment method") }}</h2>
                     <div class="space-y-3">
                         <label
                             class="flex items-start flex-col p-3 space-x-3 bg-white border rounded-lg hover:bg-gray-50 border-gray-200/70 cursor-pointer"
@@ -502,7 +502,7 @@
                         </label>
                     </div>
                     <button @click="payment_mode_confirmed = true"
-                        class="w-full items-center justify-center rounded-md bg-red-900 px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-red-900 focus:outline-none cursor-pointer text-center mb-5 flex disabled:opacity-75" id="render_payment_gateway_btn">
+                        class="w-full items-center justify-center rounded-md bg-accent px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-focus focus:outline-none cursor-pointer text-center mb-5 flex disabled:opacity-75" id="render_payment_gateway_btn">
                        
                         {{ _("Proceed to pay") }}
                          <div class="animate-spin  size-5 border-3 border-current border-t-transparent rounded-full ms-2 hidden"
