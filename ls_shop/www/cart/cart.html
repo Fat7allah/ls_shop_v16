@@ -50,7 +50,7 @@
 
 	<div x-show="show_delivery_charges && $store.cart.selected_count >0" x-transition>
 		{% call banner() %}
-		<div class="text-sm text-red-800 w-full text-center">
+		<div class="text-sm text-secondary-accent w-full text-center">
 			{{_('Add items worth')}} {{get_currency_symbol()}} <span x-text="(delivery_charge_applicable_below - $store.cart.total) > 0 ? (delivery_charge_applicable_below - $store.cart.total).toFixed(2) : 0"></span>
 			{{_('more to get free delivery')}}
 		</div>
@@ -58,7 +58,7 @@
 	</div>
 	<div x-show="$store.cart.selected_count < 1" x-transition x-transition:leave="opacity-0">
 		{% call banner() %}
-		<div class="text-sm text-red-800 w-full text-center">
+		<div class="text-sm text-secondary-accent w-full text-center">
 			{{ _('Add items to continue') }}
 		</div>
 		{% endcall %}
@@ -76,7 +76,7 @@
 				<template x-for="cart_item in $store.cart.items" :key="cart_item.variant.item_code">
 					<li class="flex w-full items-center">
 						<input type="checkbox" x-model="cart_item.selected"
-							class="w-5 h-5 accent-red-900 text-red-900 border-red-900 rounded-lg focus:ring-red-900 me-1 md:me-2 ">
+							class="w-5 h-5 accent-form text-accent border-accent rounded-lg focus:ring-focus me-1 md:me-2 ">
 
 						<div class="flex gap-2 rounded-lg border border-gray-300 md:gap-7 mb-4 w-full" x-data='{
 						wishlist_item:{
@@ -97,7 +97,7 @@
 						<!-- Product Details -->
 							<div class="mt-4 md:mt-6 flex flex-4 justify-between">
 								<div>
-									<h3 class="mb-2.5 text-sm font-medium text-red-900 md:text-base"
+									<h3 class="mb-2.5 text-sm font-medium text-brand md:text-base"
 										x-text="cart_item.brand">
 									</h3>
 									<h4 class="mb-2 text-sm font-medium md:text-base">
@@ -113,9 +113,9 @@
 									{% include 'templates/components/cart_product_size_dropdown.html'   %}
 									<div class="text-sm font-medium mt-2 md:mt-9 flex">
 										<template x-if="cart_item.default_price && cart_item.default_price !== cart_item.price">
-										<p class="text-sm font-medium line-through text-red-900 me-2 flex">
+										<p class="text-sm font-medium line-through text-strikethrough me-2 flex">
 											{{get_currency_symbol()}}
-											<span x-text="parseFloat(cart_item.default_price).toFixed(2)"></span> 
+											<span x-text="parseFloat(cart_item.default_price).toFixed(2)"></span>
 										</p>
 									</template>
 									&nbsp;
@@ -237,13 +237,13 @@
 
 					{% call signup_modal() %}
 					<span
-						class=" text-white text-base font-semibold uppercase w-full h-12 py-3 bg-red-900 hover:bg-red-800 rounded-lg flex justify-center items-center gap-2.5">
+						class=" text-white text-base font-semibold uppercase w-full h-12 py-3 bg-accent hover:bg-secondary-accent rounded-lg flex justify-center items-center gap-2.5">
 						{{ _("Login to Checkout") }}
 					</span>
 					{% endcall %}
 					{% else %}
 					<button x-on:click="proceed_to_checkout($data)"
-						class="w-full h-12  py-3 bg-red-900 hover:bg-red-800 rounded-lg flex justify-center items-center gap-2.5 cursor-pointer disabled:opacity-75"
+						class="w-full h-12  py-3 bg-accent hover:bg-secondary-accent rounded-lg flex justify-center items-center gap-2.5 cursor-pointer disabled:opacity-75"
 						:disabled="checkout_loading?true:false">
 						<span class="flex items-center text-white text-base font-semibold uppercase">
 					
@@ -260,7 +260,7 @@
 	</div>
 	<div x-show="cart_loading" style="background: rgba(255,255,255,0.8)"
 		class="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center" x-cloak>
-		<div class=" p-4 rounded-md  text-lg text-red-900 flex items-center gap-2">
+		<div class=" p-4 rounded-md  text-lg text-accent flex items-center gap-2">
 			<div class="  animate-spin  size-5 border-3 border-current border-t-transparent  rounded-full ms-2"
 				role="status" aria-label="loading">
 			</div>
