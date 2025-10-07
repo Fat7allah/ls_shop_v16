@@ -39,6 +39,11 @@ def install_demo_data():
 		# Step 2: Configure Lifestyle Settings
 		print("\nStep 2: Configuring Lifestyle Settings...")
 		configure_lifestyle_settings()
+		# Step 2.1: Create Ecommerce Structure
+		print("\nStep 2.1: Creating Ecommerce Structure...")
+		create_ecommerce_group()
+		create_ecommerce_categories()
+		create_default_footer_sections()
 		
 		# Step 3: Create demo products
 		print("\nStep 3: Creating Demo Products...")
@@ -759,6 +764,209 @@ def fix_product_routes():
 	print(f"    ✓ Fixed {sav_count} SAV routes")
 	print(f"    ✓ Fixed {wi_count} Website Item routes")
 	print(f"    Note: Routes are clean slugs - hooks.py adds /en/products/ prefix")
+
+
+
+def create_ecommerce_group():
+	"""Create Ecommerce Website parent and car parts category item groups"""
+	parent = "Ecommerce Website"
+
+	# Car parts categories (matching Ecommerce Category doctype)
+	parent_categories = {
+		"Engine Parts": "Engine Parts",
+		"Brake System": "Brake System",
+		"Interior Accessories": "Interior Accessories"
+	}
+
+	# Find or create root item group
+	root_item_group = get_root_item_group()
+
+	# Create parent group
+	frappe.get_doc(
+		{
+			"doctype": "Item Group",
+			"item_group_name": parent,
+			"is_group": True,
+			"parent_item_group": root_item_group,
+			"custom_displayname": parent,
+			"custom_item_group_display_name": parent,
+		}
+	).insert(ignore_if_duplicate=True)
+
+	# Create car parts category item groups
+	for category_name, display_name in parent_categories.items():
+		frappe.get_doc(
+			{
+				"doctype": "Item Group",
+				"item_group_name": category_name,
+				"is_group": True,
+				"parent_item_group": parent,
+				"custom_displayname": display_name,
+				"custom_item_group_display_name": display_name,
+			}
+		).insert(ignore_if_duplicate=True)
+
+
+def get_root_item_group():
+	"""Find or create the root item group"""
+	# Try to find existing root item group (parent_item_group is null)
+	root_groups = frappe.get_all(
+		"Item Group",
+		filters={"parent_item_group": ["in", ["", None]]},
+		fields=["name"],
+		limit=1
+	)
+
+	if root_groups:
+		return root_groups[0].name
+
+	# If no root exists, create "All Item Groups"
+	root_name = "All Item Groups"
+	if not frappe.db.exists("Item Group", root_name):
+		frappe.get_doc(
+			{
+				"doctype": "Item Group",
+				"item_group_name": root_name,
+				"is_group": True,
+				"parent_item_group": "",
+				"custom_displayname": root_name,
+				"custom_item_group_display_name": root_name,
+			}
+		).insert(ignore_permissions=True)
+
+	return root_name
+
+
+def create_ecommerce_categories():
+	"""Create default Ecommerce Categories (now database-driven instead of hardcoded)"""
+
+	# Default categories - users can rename or modify these later
+	# Using car parts theme as per requirements
+	categories = [
+		{
+			"category_name": "Engine Parts",
+			"display_name": "Engine Parts",
+			"route_slug": "engine-parts",
+			"item_group": "Engine Parts",  # Links to Item Group created above
+			"enabled": 1,
+			"display_order": 1
+		},
+		{
+			"category_name": "Brake System",
+			"display_name": "Brake System",
+			"route_slug": "brake-system",
+			"item_group": "Brake System",  # Links to Item Group created above
+			"enabled": 1,
+			"display_order": 2
+		},
+		{
+			"category_name": "Interior Accessories",
+			"display_name": "Interior Accessories",
+			"route_slug": "interior-accessories",
+			"item_group": "Interior Accessories",  # Links to Item Group created above
+			"enabled": 1,
+			"display_order": 3
+		}
+	]
+
+	for cat_data in categories:
+		if not frappe.db.exists("Ecommerce Category", cat_data["category_name"]):
+			cat = frappe.get_doc({
+				"doctype": "Ecommerce Category",
+				**cat_data
+			})
+			cat.insert(ignore_permissions=True)
+			frappe.errprint(f"Created Ecommerce Category: {cat_data['category_name']}")
+		else:
+			frappe.errprint(f"Ecommerce Category '{cat_data['category_name']}' already exists")
+
+
+def create_default_footer_sections():
+	"""Create default footer sections in Lifestyle Settings"""
+
+	if not frappe.db.exists("Lifestyle Settings", "Lifestyle Settings"):
+		frappe.errprint("Lifestyle Settings not found, skipping footer sections")
+		return
+
+	settings = frappe.get_doc("Lifestyle Settings", "Lifestyle Settings")
+
+	# Set default email templates if not already set (required fields)
+	if not settings.order_confirmation_email_template:
+		settings.order_confirmation_email_template = "Order Confirmation"
+
+	if not settings.item_in_stock_email_template:
+		settings.item_in_stock_email_template = "Item In Stock"
+
+	if not settings.order_cancellation_email_template:
+		settings.order_cancellation_email_template = "Order Cancellation"
+
+	# Only create if no footer sections exist
+	if settings.footer_sections:
+		frappe.errprint("Footer sections already exist, skipping")
+		return
+
+	# Default footer sections with common e-commerce links
+	default_sections = [
+		{
+			"section_title": "My Account",
+			"section_order": 1,
+			"enabled": 1,
+			"footer_links": [
+				{"link_label": "My Account", "link_url": "/account/dashboard", "link_order": 1, "enabled": 1},
+				{"link_label": "Orders History", "link_url": "/account/orders", "link_order": 2, "enabled": 1},
+				{"link_label": "Wishlist", "link_url": "/account/wishlist", "link_order": 3, "enabled": 1},
+				{"link_label": "Track Order", "link_url": "#", "link_order": 4, "enabled": 1},
+			]
+		},
+		{
+			"section_title": "Policies",
+			"section_order": 2,
+			"enabled": 1,
+			"footer_links": [
+				{"link_label": "Privacy Policy", "link_url": "#", "link_order": 1, "enabled": 1},
+				{"link_label": "Terms and Conditions", "link_url": "#", "link_order": 2, "enabled": 1},
+				{"link_label": "Shipping Policy", "link_url": "#", "link_order": 3, "enabled": 1},
+				{"link_label": "Returns Policy", "link_url": "#", "link_order": 4, "enabled": 1},
+				{"link_label": "Payment Policy", "link_url": "#", "link_order": 5, "enabled": 1},
+			]
+		},
+		{
+			"section_title": "Customer Service",
+			"section_order": 3,
+			"enabled": 1,
+			"footer_links": [
+				{"link_label": "FAQ", "link_url": "#", "link_order": 1, "enabled": 1},
+				{"link_label": "Contact Us", "link_url": "#", "link_order": 2, "enabled": 1},
+				{"link_label": "Sizing Charts", "link_url": "#", "link_order": 3, "enabled": 1},
+				{"link_label": "International Shipping", "link_url": "#", "link_order": 4, "enabled": 1},
+			]
+		}
+	]
+
+	# Create Footer Section Config records and link them to Lifestyle Settings
+	for section_data in default_sections:
+		# Create Footer Section Config
+		section_config_name = section_data["section_title"]
+		if not frappe.db.exists("Footer Section Config", section_config_name):
+			section_config = frappe.get_doc({
+				"doctype": "Footer Section Config",
+				"section_title": section_config_name,
+				"section_order": section_data["section_order"],
+				"enabled": section_data["enabled"],
+				"footer_links": section_data["footer_links"]
+			})
+			section_config.insert(ignore_permissions=True)
+			frappe.errprint(f"Created Footer Section Config: {section_config_name}")
+
+		# Add to Lifestyle Settings footer_sections (Footer Section Mapping)
+		settings.append("footer_sections", {
+			"footer_section": section_config_name,
+			"section_order": section_data["section_order"],
+			"enabled": section_data["enabled"]
+		})
+
+	settings.save(ignore_permissions=True)
+	frappe.errprint("✅ Default footer sections created")
 
 
 if __name__ == "__main__":
