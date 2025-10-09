@@ -48,36 +48,44 @@ frappe.ui.form.on('Lifestyle Settings', {
 			},
 		);
 	},
-	
+
 	install_demo_data(frm) {
 		frappe.confirm(
-			__('This will create demo products, brands, price lists, and configure settings. Continue?'),
+			__(
+				'This will create demo products, brands, price lists, and configure settings. Continue?',
+			),
 			() => {
-				frm.call({
-					doc: frm.doc,
-					method: 'install_demo_data'
-				}).then((r) => {
-					if (r.message) {
-						frappe.msgprint(r.message);
-					}
-				});
-			}
+				frm
+					.call({
+						doc: frm.doc,
+						method: 'install_demo_data',
+					})
+					.then((r) => {
+						if (r.message) {
+							frappe.msgprint(r.message);
+						}
+					});
+			},
 		);
 	},
-	
+
 	publish_all_items(frm) {
 		frappe.confirm(
-			__('This will publish all items to the website and fix routes. Continue?'),
+			__(
+				'This will publish all items to the website and fix routes. Continue?',
+			),
 			() => {
-				frm.call({
-					doc: frm.doc,
-					method: 'publish_all_items'
-				}).then((r) => {
-					if (r.message) {
-						frappe.msgprint(r.message);
-					}
-				});
-			}
+				frm
+					.call({
+						doc: frm.doc,
+						method: 'publish_all_items',
+					})
+					.then((r) => {
+						if (r.message) {
+							frappe.msgprint(r.message);
+						}
+					});
+			},
 		);
 	},
 });

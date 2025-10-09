@@ -105,18 +105,18 @@ def get_product_filters(selected_filters):
 		)
 		.where(item_price.price_list == sale_price_list)  # Adjust price list as needed
 	).run(as_dict=True)
-	
+
 	# Get available sizes
 	filters = {}
-	
+
 	# Get dynamic categories from Ecommerce Category doctype
 	ecommerce_categories = frappe.get_all(
 		"Ecommerce Category",
 		filters={"enabled": 1},
 		fields=["name", "category_name", "display_name", "item_group"],
-		order_by="display_order asc, category_name asc"
+		order_by="display_order asc, category_name asc",
 	)
-	
+
 	if category:
 		# If a specific category is selected, show its subcategories
 		filters[category] = get_category_tree(category)["children"]

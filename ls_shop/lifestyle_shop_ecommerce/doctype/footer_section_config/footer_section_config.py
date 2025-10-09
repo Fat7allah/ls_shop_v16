@@ -13,6 +13,7 @@ class FooterSectionConfig(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from ls_shop.lifestyle_shop_ecommerce.doctype.footer_link.footer_link import FooterLink
 
 		enabled: DF.Check

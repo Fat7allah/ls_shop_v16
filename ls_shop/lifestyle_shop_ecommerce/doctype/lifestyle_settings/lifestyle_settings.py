@@ -14,7 +14,10 @@ class LifestyleSettings(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from ls_shop.lifestyle_shop_ecommerce.doctype.footer_section_mapping.footer_section_mapping import FooterSectionMapping
+
+		from ls_shop.lifestyle_shop_ecommerce.doctype.footer_section_mapping.footer_section_mapping import (
+			FooterSectionMapping,
+		)
 		from ls_shop.lifestyle_shop_ecommerce.doctype.item_group_map.item_group_map import ItemGroupMap
 		from ls_shop.lifestyle_shop_ecommerce.doctype.return_reason.return_reason import ReturnReason
 
@@ -118,33 +121,33 @@ class LifestyleSettings(Document):
 				"item_group",
 				mapping.ecommerce_item_group,
 			)
-	
+
 	@frappe.whitelist()
 	def install_demo_data(self):
 		"""Install demo data for testing LS Shop"""
 		from ls_shop.install_demo_data import install_demo_data
-		
+
 		frappe.enqueue(
 			install_demo_data,
 			queue="long",
 			timeout=3000,
 		)
-		
+
 		return "Demo data installation has been queued. This may take a few minutes. Check the background jobs for progress."
-	
+
 	@frappe.whitelist()
 	def publish_all_items(self):
 		"""Publish all items to website"""
 		from ls_shop.publish_demo_items import publish_all_demo_items
-		
+
 		frappe.enqueue(
 			publish_all_demo_items,
 			queue="default",
 			timeout=600,
 		)
-		
+
 		return "Publishing all items to website. This may take a moment. Refresh the page after completion."
-	
+
 	def generate_theme_css(self):
 		"""Generate CSS custom properties from color scheme settings"""
 		return f"""
@@ -168,7 +171,7 @@ class LifestyleSettings(Document):
 			--ls-footer-bg: {self.footer_bg_color or '#111827'};
 			--ls-footer-text: {self.footer_text_color or '#ffffff'};
 		}}
-		
+
 		/* Primary color utilities */
 		.bg-primary {{ background-color: var(--ls-primary) !important; }}
 		.text-primary {{ color: var(--ls-primary) !important; }}
@@ -176,17 +179,17 @@ class LifestyleSettings(Document):
 		.hover\\:bg-primary-hover:hover {{ background-color: var(--ls-primary-hover) !important; }}
 		.hover\\:text-primary-hover:hover {{ color: var(--ls-primary-hover) !important; }}
 		.focus\\:border-primary:focus {{ border-color: var(--ls-primary) !important; }}
-		
+
 		/* Link color utilities */
 		.text-link {{ color: var(--ls-link) !important; }}
 		.hover\\:text-link-hover:hover {{ color: var(--ls-link-hover) !important; }}
-		
+
 		/* Accent color utilities */
 		.bg-accent {{ background-color: var(--ls-accent) !important; }}
 		.text-accent {{ color: var(--ls-accent) !important; }}
 		.border-accent {{ border-color: var(--ls-border-accent) !important; }}
 		.hover\\:bg-accent:hover {{ background-color: var(--ls-accent) !important; }}
-		
+
 		/* UI Element utilities */
 		.bg-button {{ background-color: var(--ls-button-bg) !important; }}
 		.text-strikethrough {{ color: var(--ls-strikethrough) !important; }}

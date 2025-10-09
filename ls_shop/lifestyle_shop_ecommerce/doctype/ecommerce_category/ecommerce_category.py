@@ -11,7 +11,7 @@ class EcommerceCategory(Document):
 		"""Validate before saving"""
 		self.validate_route_slug()
 		self.set_defaults()
-	
+
 	def validate_route_slug(self):
 		"""Ensure route slug is unique and properly formatted"""
 		if not self.route_slug:
@@ -20,17 +20,15 @@ class EcommerceCategory(Document):
 		else:
 			# Clean up the slug
 			self.route_slug = frappe.scrub(self.route_slug)
-		
+
 		# Check for duplicates
 		if self.route_slug:
 			duplicate = frappe.db.get_value(
-				"Ecommerce Category",
-				{"route_slug": self.route_slug, "name": ["!=", self.name]},
-				"name"
+				"Ecommerce Category", {"route_slug": self.route_slug, "name": ["!=", self.name]}, "name"
 			)
 			if duplicate:
 				frappe.throw(f"Route slug '{self.route_slug}' is already used by {duplicate}")
-	
+
 	def set_defaults(self):
 		"""Set default values"""
 		if not self.display_name:
@@ -43,8 +41,17 @@ def get_active_categories():
 	return frappe.get_all(
 		"Ecommerce Category",
 		filters={"enabled": 1},
-		fields=["name", "category_name", "display_name", "route_slug", "item_group", "icon", "image", "display_order"],
-		order_by="display_order asc, category_name asc"
+		fields=[
+			"name",
+			"category_name",
+			"display_name",
+			"route_slug",
+			"item_group",
+			"icon",
+			"image",
+			"display_order",
+		],
+		order_by="display_order asc, category_name asc",
 	)
 
 
@@ -55,5 +62,5 @@ def get_category_by_slug(slug):
 		"Ecommerce Category",
 		filters={"route_slug": slug, "enabled": 1},
 		fields=["name", "category_name", "display_name", "route_slug", "item_group", "icon", "image"],
-		limit=1
+		limit=1,
 	)

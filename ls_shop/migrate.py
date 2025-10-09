@@ -7,7 +7,8 @@ def after_install():
 		create_default_email_templates()
 	except Exception as e:
 		import traceback
-		error_msg = f"Error creating default email templates: {str(e)}"
+
+		error_msg = f"Error creating default email templates: {e!s}"
 		frappe.log_error(traceback.format_exc(), "Lifestyle Shop Installation - Email Templates")
 		frappe.errprint(error_msg)
 		frappe.errprint(traceback.format_exc())
@@ -25,9 +26,6 @@ def create_payment_modes():
 				"type": "Bank",
 			}
 		).insert(ignore_if_duplicate=True)
-
-
-
 
 
 def create_default_email_templates():
@@ -50,7 +48,7 @@ You can track your order status at: {{ login_url }}
 
 Best regards,
 {{ company }}""",
-			"doctype": "Sales Order"
+			"doctype": "Sales Order",
 		},
 		{
 			"name": "Item In Stock",
@@ -63,7 +61,7 @@ You can purchase it now at: {{ item_url }}
 
 Best regards,
 {{ company }}""",
-			"doctype": "Item"
+			"doctype": "Item",
 		},
 		{
 			"name": "Order Cancellation",
@@ -76,23 +74,14 @@ If you have any questions, please contact our customer service.
 
 Best regards,
 {{ company }}""",
-			"doctype": "Sales Order"
-		}
+			"doctype": "Sales Order",
+		},
 	]
 
 	for template_data in email_templates:
 		if not frappe.db.exists("Email Template", template_data["name"]):
-			template = frappe.get_doc({
-				"doctype": "Email Template",
-				**template_data
-			})
+			template = frappe.get_doc({"doctype": "Email Template", **template_data})
 			template.insert(ignore_permissions=True)
 			frappe.errprint(f"Created Email Template: {template_data['name']}")
 		else:
 			frappe.errprint(f"Email Template '{template_data['name']}' already exists")
-
-
-
-
-
-
