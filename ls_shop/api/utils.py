@@ -51,22 +51,14 @@ def get_product_detail(item_code):
 	context = website_item.get_context(context)
 	recommended_items = []
 	for item in website_item.get("recommended_items"):
-		recommended_website_item = frappe.get_doc(
-			"Website Item", {"name": item.get("website_item")}
-		)
+		recommended_website_item = frappe.get_doc("Website Item", {"name": item.get("website_item")})
 		recommended_item_context = frappe._dict(
-			{
-				"route": recommended_website_item.route
-				or recommended_website_item.make_route()
-			}
+			{"route": recommended_website_item.route or recommended_website_item.make_route()}
 		)
-		recommended_item_context = recommended_website_item.get_context(
-			recommended_item_context
-		)
+		recommended_item_context = recommended_website_item.get_context(recommended_item_context)
 		recommended_item_info = {
 			"id": recommended_website_item.get("name"),
-			"brand": recommended_website_item.get("brand")
-			or recommended_website_item.get("item_group"),
+			"brand": recommended_website_item.get("brand") or recommended_website_item.get("item_group"),
 			"product_name": recommended_website_item.get("item_name")
 			or recommended_website_item.get("web_item_name"),
 			"item_code": recommended_website_item.get("item_code"),
@@ -82,8 +74,7 @@ def get_product_detail(item_code):
 	product = {
 		"id": website_item.get("name"),
 		"brand": website_item.get("brand") or website_item.get("item_group"),
-		"product_name": website_item.get("item_name")
-		or website_item.get("web_item_name"),
+		"product_name": website_item.get("item_name") or website_item.get("web_item_name"),
 		"item_code": website_item.get("item_code"),
 		"has_variants": website_item.get("has_variants"),
 		"description": website_item.get("description"),
@@ -94,12 +85,8 @@ def get_product_detail(item_code):
 		"recommended_items": recommended_items,
 		"offers": website_item.get("offers"),
 		"slides": context.get("slides"),
-		"price_info": context.get("shopping_cart")
-		.get("product_info", {})
-		.get("price", {}),
-		"stock_qty": context.get("shopping_cart")
-		.get("product_info", {})
-		.get("stock_qty", {}),
+		"price_info": context.get("shopping_cart").get("product_info", {}).get("price", {}),
+		"stock_qty": context.get("shopping_cart").get("product_info", {}).get("stock_qty", {}),
 		# "attributes": get_attributes_and_values()
 	}
 	product["attributes"] = get_attributes_and_values(product["product_name"])
@@ -129,9 +116,7 @@ def get_whitelist_transaction_list(
 	order_by="modified",
 	custom=False,
 ):
-	return get_transaction_list(
-		doctype, txt, filters, limit_start, limit_page_length, order_by, custom
-	)
+	return get_transaction_list(doctype, txt, filters, limit_start, limit_page_length, order_by, custom)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -148,22 +133,14 @@ def get_item_details(items):
 	recommended_items = []
 
 	for item in items:
-		recommended_website_item = frappe.get_doc(
-			"Website Item", {"name": item.get("website_item")}
-		)
+		recommended_website_item = frappe.get_doc("Website Item", {"name": item.get("website_item")})
 		recommended_item_context = frappe._dict(
-			{
-				"route": recommended_website_item.route
-				or recommended_website_item.make_route()
-			}
+			{"route": recommended_website_item.route or recommended_website_item.make_route()}
 		)
-		recommended_item_context = recommended_website_item.get_context(
-			recommended_item_context
-		)
+		recommended_item_context = recommended_website_item.get_context(recommended_item_context)
 		recommended_item_info = {
 			"id": recommended_website_item.get("name"),
-			"brand": recommended_website_item.get("brand")
-			or recommended_website_item.get("item_group"),
+			"brand": recommended_website_item.get("brand") or recommended_website_item.get("item_group"),
 			"product_name": recommended_website_item.get("item_name")
 			or recommended_website_item.get("web_item_name"),
 			"item_code": recommended_website_item.get("item_code"),
