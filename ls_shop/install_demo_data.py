@@ -80,8 +80,8 @@ def install_demo_data():
 		print("  - Brake System")
 		print("  - Interior Accessories")
 		print("\n")
-		
-		frappe.db.commit()
+
+		frappe.db.commit()  # nosemgrep: manual commit required for demo data installation completion
 		
 	except Exception as e:
 		frappe.db.rollback()
@@ -134,7 +134,7 @@ def ensure_attribute_values(attribute_name, values, numeric=False):
 			]
 		})
 		attr.insert(ignore_permissions=True)
-		frappe.db.commit()
+		frappe.db.commit()  # nosemgrep: manual commit required for attribute creation in demo data
 		print(f"    ✓ {attribute_name} attribute created")
 	else:
 		# Attribute exists, just print message
@@ -253,7 +253,7 @@ def ensure_warehouse_exists():
 	company = frappe.defaults.get_user_default("Company") or frappe.db.get_value("Company", {}, "name")
 	
 	if not company:
-		frappe.throw("Please create a Company first before running demo data")
+		frappe.throw(_("Please create a Company first before running demo data"))
 	
 	# Create default warehouse
 	company_abbr = frappe.db.get_value('Company', company, 'abbr')
