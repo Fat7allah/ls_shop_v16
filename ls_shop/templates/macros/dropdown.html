@@ -53,7 +53,7 @@
         <!-- Badge (optional) -->
         {% if show_badge %}
         <span
-            class="absolute -top-3 ltr:-right-4 rtl:-left-4 bg-red-900 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+            class="absolute -top-3 ltr:-right-4 rtl:-left-4 bg-badge text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
             {% if badge_count is number %} x-text="{{ badge_count }}" {% else %} x-text="{{ badge_count }}"
             x-show="{{ badge_count }} > 0 ? true : false" {% endif %} x-cloak>
             0

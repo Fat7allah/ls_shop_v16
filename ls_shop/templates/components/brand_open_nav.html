@@ -22,14 +22,14 @@
             <div class="max-w-7xl mx-auto px-6 md:px-10 ">
                     <div class="flex border-b border-gray-200">
                     <a href="/{{frappe.lang}}/products?search={{parent_category | urlencode}}&category={{parent_category | urlencode}}" 
-                        class=" border-b-2 border-red-700 px-5 py-4 font-medium text-sm focus:outline-none text-red-900">
+                        class=" border-b-2 border-accent px-5 py-4 font-medium text-sm focus:outline-none text-accent">
                         {{_('Shop by Brands')}}
                 </a>
                 </div>
                 <div class="grid grid-cols-5 gap-2 py-8">
                     {% for brand in brands %}
                     <a href="/{{ frappe.lang }}/products?brands={{ brand.name | urlencode }}"
-                        class="text-gray-600 hover:text-red-900 text-sm  flex">
+                        class="text-gray-600 hover:text-accent text-sm  flex">
                         <div class="h-4 w-4 flex justify-center items-center me-2">
                             <img src="/assets/ls_shop/icons/arrow-right.svg" alt="">
                         </div>

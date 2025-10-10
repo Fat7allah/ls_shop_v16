@@ -23,10 +23,10 @@ def get_filter_brands(filters=None):
 
 	query = query.select(item.brand).distinct().orderby(item.brand)
 	brands = query.run(pluck=True)
-	print(brands)
-	if not brands[0]:
+	if not brands:
 		return []
-	brands = [b.title() for b in brands]
+	# Filter out None or empty brand values
+	brands = [b.title() for b in brands if b]
 	return brands
 
 
@@ -105,14 +105,32 @@ def get_product_filters(selected_filters):
 		)
 		.where(item_price.price_list == sale_price_list)  # Adjust price list as needed
 	).run(as_dict=True)
+
 	# Get available sizes
 	filters = {}
+
+	# Get dynamic categories from Ecommerce Category doctype
+	ecommerce_categories = frappe.get_all(
+		"Ecommerce Category",
+		filters={"enabled": 1},
+		fields=["name", "category_name", "display_name", "item_group"],
+		order_by="display_order asc, category_name asc",
+	)
+
 	if category:
+		# If a specific category is selected, show its subcategories
 		filters[category] = get_category_tree(category)["children"]
 	else:
-		filters["Men"] = get_category_tree("Men")["children"]
-		filters["Women"] = get_category_tree("Women")["children"]
-		filters["Kids"] = get_category_tree("Kids")["children"]
+		# Show all enabled categories with their item group trees
+		for ecom_cat in ecommerce_categories:
+			# Use the linked item_group if available, otherwise use category_name
+			item_group_name = ecom_cat.item_group or ecom_cat.category_name
+			if frappe.db.exists("Item Group", item_group_name):
+				try:
+					filters[ecom_cat.display_name] = get_category_tree(item_group_name)["children"]
+				except Exception:
+					# If category tree fails, just skip this category
+					pass
 
 	filters["brands"] = get_filter_brands(selected_filters)
 	filters["sizes"] = get_filter_sizes(selected_filters)

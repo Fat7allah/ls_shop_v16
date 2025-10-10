@@ -35,12 +35,12 @@
                     role="tablist" aria-label="tab options">
                     <button x-on:click="selected_tab = 'login'" x-bind:aria-selected="selected_tab === 'login'"
                         x-bind:tabindex="selected_tab === 'login' ? '0' : '-1'"
-                        x-bind:class="selected_tab === 'login' ? ' text-white bg-red-900 rounded-lg  ' : 'text-gray-400'"
+                        x-bind:class="selected_tab === 'login' ? ' text-white bg-primary rounded-lg  ' : 'text-gray-400'"
                         class="h-min px-8 py-2 text-sm cursor-pointer" type="button" role="tab"
                         aria-controls="tabpanellogin">{{_('Sign In')}}</button>
                     <button x-on:click="selected_tab = 'sign_in'" x-bind:aria-selected="selected_tab === 'sign_in'"
                         x-bind:tabindex="selected_tab === 'sign_in' ? '0' : '-1'"
-                        x-bind:class="selected_tab === 'sign_in' ? ' text-white bg-red-900 rounded-lg  ' : 'text-gray-400'"
+                        x-bind:class="selected_tab === 'sign_in' ? ' text-white bg-primary rounded-lg  ' : 'text-gray-400'"
                         class="h-min px-8 py-2 text-sm cursor-pointer flex items-center " type="button" role="tab"
                         aria-controls="tabpanelsign_in">{{_('Sign Up')}} </button>
 
@@ -57,7 +57,7 @@
                                     @keydown.backspace="handle_backspace($refs,$event, 0)"
                                     @keydown.left="if(0 > 0) $refs.otp0.focus()" @keydown.right="$refs.otp1.focus()"
                                     @paste="handle_paste($data,$refs,$event, 0)" maxlength="1"
-                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-red-900 text-lg"
+                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-accent text-lg"
                                     required>
 
                                 <input type="text" x-model="otp[1]" x-ref="otp1"
@@ -65,7 +65,7 @@
                                     @keydown.backspace="handle_backspace($refs,$event, 1)"
                                     @keydown.left="$refs.otp0.focus()" @keydown.right="$refs.otp2.focus()"
                                     @paste="handle_paste($data,$refs,$event, 1)" maxlength="1"
-                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-red-900 text-lg"
+                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-accent text-lg"
                                     required>
 
                                 <input type="text" x-model="otp[2]" x-ref="otp2"
@@ -73,7 +73,7 @@
                                     @keydown.backspace="handle_backspace($refs,$event, 2)"
                                     @keydown.left="$refs.otp1.focus()" @keydown.right="$refs.otp3.focus()"
                                     @paste="handle_paste($data,$refs,$event, 2)" maxlength="1"
-                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-red-900 text-lg"
+                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-accent text-lg"
                                     required>
 
                                 <input type="text" x-model="otp[3]" x-ref="otp3"
@@ -81,7 +81,7 @@
                                     @keydown.backspace="handle_backspace($refs,$event, 3)"
                                     @keydown.left="$refs.otp2.focus()" @keydown.right="$refs.otp4.focus()"
                                     @paste="handle_paste($data,$refs,$event, 3)" maxlength="1"
-                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-red-900 text-lg"
+                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-accent text-lg"
                                     required>
 
                                 <input type="text" x-model="otp[4]" x-ref="otp4"
@@ -89,7 +89,7 @@
                                     @keydown.backspace="handle_backspace($refs,$event, 4)"
                                     @keydown.left="$refs.otp3.focus()" @keydown.right="$refs.otp5.focus()"
                                     @paste="handle_paste($data,$refs,$event, 4)" maxlength="1"
-                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-red-900 text-lg"
+                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-accent text-lg"
                                     required>
 
                                 <input type="text" x-model="otp[5]" x-ref="otp5"
@@ -97,7 +97,7 @@
                                     @keydown.backspace="handle_backspace($refs,$event, 5)"
                                     @keydown.left="$refs.otp4.focus()" @keydown.right="if(5 < 5) $refs.otp5.focus()"
                                     @paste="handle_paste($data,$refs,$event, 5)" maxlength="1"
-                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-red-900 text-lg"
+                                    class="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-accent text-lg"
                                     required>
                             </div>
 

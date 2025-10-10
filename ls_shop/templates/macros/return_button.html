@@ -124,7 +124,7 @@ modal_classes='w-full md:max-w-1/2'
                 <textarea type="text" x-ref="{{item.item_code}}_return_comment" name="{{id}}_return_comment" required
                     class="w-full border-gray-300 rounded-md border p-1 text-sm text-gray-600 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                     placeholder="Enter your comment..."></textarea>
-                <span class="text-red-800 text-xs" x-ref="{{item.item_code}}_error" x-transition></span>
+                <span class="text-secondary-accent text-xs" x-ref="{{item.item_code}}_error" x-transition></span>
             </div>
         </template>
     </div>
@@ -133,7 +133,7 @@ modal_classes='w-full md:max-w-1/2'
     <div
         class="flex flex-col-reverse justify-between gap-2 border-t border-gray-300 bg-white/60 mt-4 pt-4 sm:flex-row sm:items-center md:justify-end">
         <button type="button" x-on:click="return_items('{{ order_id }}', selected_items,$event.target,$refs)"
-            class="whitespace-nowrap rounded-lg bg-red-900 px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:opacity-75 active:opacity-100 disabled:opacity-75 flex items-center justify-center">
+            class="whitespace-nowrap rounded-lg bg-primary px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:opacity-75 active:opacity-100 disabled:opacity-75 flex items-center justify-center">
             {{ _('Return') }} <div
                 class="hidden  animate-spin  size-4 border-3 border-current border-t-transparent  rounded-full ms-2"
                 role="status" aria-label="loading">

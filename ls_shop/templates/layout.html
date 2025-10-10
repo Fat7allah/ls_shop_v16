@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+{% set settings = frappe.get_cached_doc("Lifestyle Settings", "Lifestyle Settings") %}
+{% set store_name = settings.store_name or "Lifestyle" %}
+{% set favicon = settings.favicon or "/assets/ls_shop/images/meta/favicon-32x32.png" %}
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{_("Lifestyle")}}</title>
+    <title>{{ _(store_name) }}</title>
 
     <!-- meta -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/ls_shop/images/meta/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/ls_shop/images/meta/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/ls_shop/images/meta/favicon-16x16.png?v=1744822242">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ favicon }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ favicon }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ favicon }}">
 
 
     <link rel="stylesheet" href="/assets/ls_shop/css/tailwind.css">
+    
+    <!-- Dynamic Theme CSS -->
+    {{ settings.generate_theme_css()|safe }}
 
     
     <!-- https://alpinejs.dev/start-here -->

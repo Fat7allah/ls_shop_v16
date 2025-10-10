@@ -25,7 +25,7 @@
     }
     
     .embla__dot--selected {
-    background-color: #991b1f !important;
+    background-color: var(--ls-carousel-dot) !important;
     }
 </style>
 <!-- Product variant is style attribute variant -->
@@ -82,7 +82,7 @@
                     <!-- Disounted price -->
                     {% if discount_percent %}
                     <span
-                        class="text-base font-normal text-red-900 line-through decoration-[1px] md:text-xl flex">{{get_currency_symbol()}}{{"%.2f"|format(default_price)}}</span>
+                        class="text-base font-normal text-strikethrough line-through decoration-[1px] md:text-xl flex">{{get_currency_symbol()}}{{"%.2f"|format(default_price)}}</span>
                     {% endif %}
                     <span
                         class="ms-2 text-base font-medium text-gray-900 md:text-xl md:font-medium flex">{{get_currency_symbol()}}{{"%.2f"|format(selected_price)}}</span>
@@ -110,7 +110,7 @@
                         </template>
                     </div>
                     {% if size_selected %}
-                        <p class="text-red-900 text-xs font-medium mb-3">
+                        <p class="text-accent text-xs font-medium mb-3">
                             {% if product_in_stock %}
                             {{_('Only')}}
                             {% endif %}
@@ -127,7 +127,7 @@
                             <button
                                 class="cursor-pointer text-md rounded-md bg-gray-100 px-4 py-2 font-medium text-gray-700 hover:bg-gray-200 disabled:hover:bg-gray-100 disabled:pointer-events-none"
                                 :class="{
-                                    'outline outline-red-900 bg-white text-red-900 hover:bg-white': selected_btn==='{{size.size}}'&& '{{size.stock_detail.in_stock}}' === '1' && '{{size_selected}}' !== 'None',
+                                    'outline outline-accent bg-white text-accent hover:bg-white': selected_btn==='{{size.size}}'&& '{{size.stock_detail.in_stock}}' === '1' && '{{size_selected}}' !== 'None',
                                     'opacity-50 out-of-stock': '{{size.stock_detail.in_stock}}' !== '1'
                                 }"  @click="update_size('{{ size.size }}');
                                 selected_variant={{size}}">
@@ -164,7 +164,7 @@
                 {% endif %}
                 <div x-data="{ is_open: false }">
                     <button
-                        class="mt-7 flex w-full items-center justify-between rounded-md bg-red-900 px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-red-900 focus:outline-none cursor-pointer disabled:opacity-75 disabled:pointer-events-none"
+                        class="mt-7 flex w-full items-center justify-between rounded-md bg-button px-6 py-3 font-normal text-white opacity-90 hover:opacity-100 focus:ring-2 focus:ring-focus focus:outline-none cursor-pointer disabled:opacity-75 disabled:pointer-events-none"
                         @click="
                                     if (selected_variant) {
                                         $store.cart.add(product, selected_variant, price,default_price, brand,sizes,qty);
@@ -184,7 +184,7 @@
                             <img src="{{ images[0]}}" alt="{{ _(product_variant.display_name) }}"
                                 class="w-34 h-45 object-cover rounded-lg">
                         </div>
-                        <p class="text-red-900">
+                        <p class="text-accent">
                             {% if frappe.lang == "en" %}
                             {{ _(product.item_name) }}
                             {% else %}
@@ -198,7 +198,7 @@
                                 {{ _("Continue Shopping") }}
                             </button>
                             <a href="/{{frappe.lang}}/cart"
-                                class="px-4 py-2 bg-red-900 text-white  opacity-90 hover:opacity-100  rounded-md">
+                                class="px-4 py-2 bg-accent text-white  opacity-90 hover:opacity-100  rounded-md">
                                 {{ _("Go to Cart") }}
                             </a>
                         </div>

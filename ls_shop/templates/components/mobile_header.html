@@ -13,7 +13,7 @@
             {% include "templates/components/user_dropdown.html" %}
             {% include "templates/components/cart_dropdown.html" %}
         </div>
-        <button @click="is_offcanvas_open = false" class="text-white bg-red-900 rounded-full p-1">
+        <button @click="is_offcanvas_open = false" class="text-white bg-primary rounded-full p-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -72,12 +72,12 @@
         </div>
 
         {% if frappe.session.user != 'Guest' %}
-            <button @click="logout" class="flex w-full items-center justify-between p-4 text-red-800 font-medium mt-25 capitalize">
+            <button @click="logout" class="flex w-full items-center justify-between p-4 text-secondary-accent font-medium mt-25 capitalize">
                 {{_('log out')}}
             </button>
         {% else %}
             {% call signup_modal() %}
-                <div class="flex w-full items-center justify-between p-4 text-red-800 font-medium mt-25 capitalize">
+                <div class="flex w-full items-center justify-between p-4 text-secondary-accent font-medium mt-25 capitalize">
                     {{_('login')}}  
                 </div>
             {% endcall %}

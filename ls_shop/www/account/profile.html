@@ -44,7 +44,7 @@ x-data=
         </div>
     </div>
     <div x-show="errors.length > 0"
-        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mt-4" x-cloak
+        class="bg-red-100 border border-red-400 text-accent px-4 py-3 rounded-lg relative mt-4" x-cloak
         x-transition.origin.top>
         <ul>
             <template x-for="error in errors" :key="error">
@@ -52,7 +52,7 @@ x-data=
             </template>
         </ul>
     </div>
-    <button class="bg-red-900 text-white py-2 px-10 mt-4 rounded-lg disabled:opacity-75 flex items-center cursor-pointer"
+    <button class="bg-accent text-white py-2 px-10 mt-4 rounded-lg disabled:opacity-75 flex items-center cursor-pointer"
         x-ref="update_btn">{{_('Update')}}
         <div class="hidden  animate-spin  size-4 border-3 border-current border-t-transparent  rounded-full ms-2"
             role="status" aria-label="loading">
