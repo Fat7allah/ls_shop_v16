@@ -488,66 +488,65 @@ def create_configurator(template_name, product_data):
 
 
 def create_style_variant(configurator_name, template_name, color, product_data):
-    """Create Style Attribute Variant for a specific color"""
+	"""Create Style Attribute Variant for a specific color"""
 
-    # Check if variant exists
-    existing = frappe.db.get_value(
-        "Style Attribute Variant", {"configurator": configurator_name, "attribute_value": color}, "name"
-    )
+	# Check if variant exists
+	existing = frappe.db.get_value(
+		"Style Attribute Variant", {"configurator": configurator_name, "attribute_value": color}, "name"
+	)
 
-    if existing:
-        print(f"    • Style variant '{color}' already exists")
-        return frappe.get_doc("Style Attribute Variant", existing)
+	if existing:
+		print(f"    • Style variant '{color}' already exists")
+		return frappe.get_doc("Style Attribute Variant", existing)
 
-    # Route should NOT include language prefix - hooks.py handles that
-    route_slug = f"{product_data['code'].lower()}-{color.lower()}"
+	# Route should NOT include language prefix - hooks.py handles that
+	route_slug = f"{product_data['code'].lower()}-{color.lower()}"
 
-    # --- START CHANGE: Color Logic for Placehold.co ---
-    # Map your color names to Hex codes
-    color_hex_map = {
-        "Black": "000000",
-        "White": "FFFFFF",
-        "Blue": "0000FF",
-        "Red": "FF0000",
-        "Green": "28A745", 
-        "Navy": "000080",
-        "Gray": "6C757D",
-        "XS": "333333", # Fallbacks for sizes if needed
-    }
-    
-    # Get background hex, default to Gray if unknown
-    bg_hex = color_hex_map.get(color, "6C757D")
-    
-    # Intelligent text color: If background is White, text is Black. Otherwise, text is White.
-    text_hex = "000000" if bg_hex == "FFFFFF" else "FFFFFF"
-    
-    # URL format: https://placehold.co/800x800/{BG}/{TEXT}.png?text={TEXT_CONTENT}
-    image_text = f"{color} {product_data['name']}".replace(" ", "+")
-    image_url = f"https://placehold.co/800x800/{bg_hex}/{text_hex}.png?text={image_text}"
-    # --- END CHANGE ---
+	# Map your color names to Hex codes
+	color_hex_map = {
+		"Black": "000000",
+		"White": "FFFFFF",
+		"Blue": "0000FF",
+		"Red": "FF0000",
+		"Green": "28A745",
+		"Navy": "000080",
+		"Gray": "6C757D",
+		"XS": "333333",  # Fallbacks for sizes if needed
+	}
 
-    variant = frappe.get_doc(
-        {
-            "doctype": "Style Attribute Variant",
-            "configurator": configurator_name,
-            "item_style": template_name,
-            "attribute_value": color,
-            "attribute_name": "Color",
-            "display_name": f"{product_data['name']} - {color}",
-            "item_group": product_data["item_group"],
-            "is_published": 1,
-            "route": route_slug,
-            "images": [
-                {
-                    "image": image_url,
-                }
-            ],
-        }
-    )
+	# Get background hex, default to Gray if unknown
+	bg_hex = color_hex_map.get(color, "6C757D")
 
-    variant.insert(ignore_permissions=True)
-    print(f"    ✓ Style variant '{color}' created")
-    return variant
+	# Intelligent text color: If background is White, text is Black. Otherwise, text is White.
+	text_hex = "000000" if bg_hex == "FFFFFF" else "FFFFFF"
+
+	# URL format: https://placehold.co/800x800/{BG}/{TEXT}.png?text={TEXT_CONTENT}
+	image_text = f"{color} {product_data['name']}".replace(" ", "+")
+	image_url = f"https://placehold.co/800x800/{bg_hex}/{text_hex}.png?text={image_text}"
+
+	variant = frappe.get_doc(
+		{
+			"doctype": "Style Attribute Variant",
+			"configurator": configurator_name,
+			"item_style": template_name,
+			"attribute_value": color,
+			"attribute_name": "Color",
+			"display_name": f"{product_data['name']} - {color}",
+			"item_group": product_data["item_group"],
+			"is_published": 1,
+			"route": route_slug,
+			"images": [
+				{
+					"image": image_url,
+				}
+			],
+		}
+	)
+
+	variant.insert(ignore_permissions=True)
+	print(f"    ✓ Style variant '{color}' created")
+	return variant
+
 
 def create_item_variants(template_name, product_data):
 	"""Create actual item variants for all color/size combinations"""
