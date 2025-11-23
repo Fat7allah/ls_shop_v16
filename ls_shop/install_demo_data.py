@@ -502,6 +502,23 @@ def create_style_variant(configurator_name, template_name, color, product_data):
 	# Route should NOT include language prefix - hooks.py handles that
 	route_slug = f"{product_data['code'].lower()}-{color.lower()}"
 
+	color_hex_map = {
+		"Black": "000000",
+		"White": "FFFFFF",
+		"Blue": "0000FF",
+		"Red": "FF0000",
+		"Green": "28A745",
+		"Navy": "000080",
+		"Gray": "6C757D",
+	}
+
+	bg_hex = color_hex_map.get(color, "6C757D")
+
+	text_hex = "000000" if bg_hex == "FFFFFF" else "FFFFFF"
+
+	image_text = f"{color} {product_data['name']}".replace(" ", "+")
+	image_url = f"https://placehold.co/800x800/{bg_hex}/{text_hex}.png?text={image_text}"
+
 	variant = frappe.get_doc(
 		{
 			"doctype": "Style Attribute Variant",
@@ -515,7 +532,7 @@ def create_style_variant(configurator_name, template_name, color, product_data):
 			"route": route_slug,
 			"images": [
 				{
-					"image": f"https://via.placeholder.com/800x800/{'000000' if color == 'Black' else '0000FF' if color == 'Blue' else 'FF0000' if color == 'Red' else 'FFFFFF'}/FFFFFF?text={color}+{product_data['name'].replace(' ', '+')}",
+					"image": image_url,
 				}
 			],
 		}
