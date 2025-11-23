@@ -502,7 +502,6 @@ def create_style_variant(configurator_name, template_name, color, product_data):
 	# Route should NOT include language prefix - hooks.py handles that
 	route_slug = f"{product_data['code'].lower()}-{color.lower()}"
 
-	# Map your color names to Hex codes
 	color_hex_map = {
 		"Black": "000000",
 		"White": "FFFFFF",
@@ -511,16 +510,12 @@ def create_style_variant(configurator_name, template_name, color, product_data):
 		"Green": "28A745",
 		"Navy": "000080",
 		"Gray": "6C757D",
-		"XS": "333333",  # Fallbacks for sizes if needed
 	}
 
-	# Get background hex, default to Gray if unknown
 	bg_hex = color_hex_map.get(color, "6C757D")
 
-	# Intelligent text color: If background is White, text is Black. Otherwise, text is White.
 	text_hex = "000000" if bg_hex == "FFFFFF" else "FFFFFF"
 
-	# URL format: https://placehold.co/800x800/{BG}/{TEXT}.png?text={TEXT_CONTENT}
 	image_text = f"{color} {product_data['name']}".replace(" ", "+")
 	image_url = f"https://placehold.co/800x800/{bg_hex}/{text_hex}.png?text={image_text}"
 
