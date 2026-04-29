@@ -9,10 +9,8 @@ from frappe.query_builder import Case, DocType
 from frappe.query_builder.functions import Count, Min, Sum
 from frappe.utils import add_days, flt, get_datetime, now_datetime
 from pypika import Order
-from webshop.webshop.shopping_cart.cart import (
-	get_address_docs,
-	get_party,
-)
+
+from ls_shop.core import get_address_docs, get_party
 
 
 def get_complete_nested_links(parent_group):

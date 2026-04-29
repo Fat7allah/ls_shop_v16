@@ -7,6 +7,7 @@
 	"field_order": [
 		"branding_section",
 		"store_name",
+		"company",
 		"column_break_brand",
 		"brand_logo",
 		"footer_logo",
@@ -646,12 +647,19 @@
 			"fieldname": "publish_all_items",
 			"fieldtype": "Button",
 			"label": "Publish All Items to Website"
+		},
+		{
+			"fieldname": "company",
+			"fieldtype": "Link",
+			"label": "Company",
+			"options": "Company",
+			"reqd": 1
 		}
 	],
 	"index_web_pages_for_search": 1,
 	"issingle": 1,
 	"links": [],
-	"modified": "2025-10-07 15:34:41.977684",
+	"modified": "2026-04-29 12:00:00.000000",
 	"modified_by": "Administrator",
 	"module": "Lifestyle Shop Ecommerce",
 	"name": "Lifestyle Settings",

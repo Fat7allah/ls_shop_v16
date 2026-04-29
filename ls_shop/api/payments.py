@@ -5,11 +5,8 @@ from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_ent
 from erpnext.accounts.doctype.pricing_rule.utils import validate_coupon_code
 from erpnext.selling.doctype.quotation.quotation import _make_sales_order
 from frappe.utils import getdate
-from webshop.webshop.shopping_cart.cart import (
-	_get_cart_quotation,
-	get_cart_quotation,
-)
 
+from ls_shop.core import _get_cart_quotation
 from ls_shop.utils import get_cod_configuration
 
 

@@ -13,6 +13,43 @@ def after_install():
 		frappe.errprint(error_msg)
 		frappe.errprint(traceback.format_exc())
 
+	register_optional_doctype_links()
+
+
+def after_migrate():
+	register_optional_doctype_links()
+
+
+def register_optional_doctype_links():
+	"""Add Customize Form connections for optional integrations whose doctypes are
+	provided by tabby_frappe.
+	"""
+	add_sales_order_link_if_doctype_exists("Tabby Payment Request", "ref_docname")
+
+
+def add_sales_order_link_if_doctype_exists(link_doctype: str, link_fieldname: str):
+	if not frappe.db.exists("DocType", link_doctype):
+		return
+
+	customize_form = frappe.get_doc({"doctype": "Customize Form", "doc_type": "Sales Order"})
+	customize_form.run_method("fetch_to_customize")
+	if any(row.link_doctype == link_doctype for row in (customize_form.get("links") or [])):
+		return
+
+	customize_form.append(
+		"links",
+		{
+			"link_doctype": link_doctype,
+			"link_fieldname": link_fieldname,
+		},
+	)
+	try:
+		customize_form.save()
+	except Exception:
+		import traceback
+
+		frappe.log_error(traceback.format_exc(), f"ls_shop: optional link for {link_doctype}")
+
 
 def create_payment_modes():
 	modes = {"Telr"}

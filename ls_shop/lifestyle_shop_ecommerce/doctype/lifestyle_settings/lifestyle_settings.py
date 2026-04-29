@@ -34,6 +34,7 @@ class LifestyleSettings(Document):
 		cod_charge: DF.Currency
 		cod_charge_applicable_below: DF.Currency
 		cod_enabled: DF.Check
+		company: DF.Link
 		contact_email: DF.Data | None
 		contact_phone: DF.Data | None
 		copyright_text: DF.Data | None
@@ -86,18 +87,10 @@ class LifestyleSettings(Document):
 			frappe.throw(frappe._("At least one payment method (Telr, Tabby, or COD) must be enabled."))
 
 	def get_default_price_list(self):
-		return (
-			self.default_price_list
-			if self.default_price_list
-			else frappe.get_cached_value("Webshop Settings", "Webshop Settings", "price_list")
-		)
+		return self.default_price_list
 
 	def get_sale_price_list(self):
-		return (
-			self.sale_price_list
-			if self.sale_price_list
-			else frappe.get_cached_value("Webshop Settings", "Webshop Settings", "price_list")
-		)
+		return self.sale_price_list
 
 	@frappe.whitelist()
 	def enqueue_publish_all_variants(self, attribute: str):

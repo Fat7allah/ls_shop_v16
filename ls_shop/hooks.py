@@ -5,7 +5,6 @@ app_description = "Ecommerce extension for ERPNext"
 app_email = "rahul@buildwithhussain.com"
 app_license = "agpl-3.0"
 
-required_apps = ["webshop"]
 
 website_redirects = [
 	{"source": "/products", "target": "/en/products"},
@@ -87,6 +86,7 @@ doctype_js = {
 }
 
 after_install = "ls_shop.migrate.after_install"
+after_migrate = "ls_shop.migrate.after_migrate"
 
 
 doc_events = {
