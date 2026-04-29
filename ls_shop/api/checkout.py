@@ -1,7 +1,7 @@
 import frappe
-from webshop.webshop.shopping_cart.cart import _get_cart_quotation, get_cart_quotation
 
 from ls_shop.api.payments import set_charges
+from ls_shop.core import _get_cart_quotation
 from ls_shop.utils import get_delivery_configuration
 
 

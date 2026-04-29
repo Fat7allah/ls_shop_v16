@@ -59,16 +59,14 @@ def get_data():
 	PaymentEntry = DocType("Payment Entry")
 	PaymentEntryReference = DocType("Payment Entry Reference")
 	Telr_payment_request = DocType("Telr Payment Request")
-	tabby_payment_request = DocType("Tabby Payment Request")
+	tabby_installed = bool(frappe.db.exists("DocType", "Tabby Payment Request"))
 
-	orphaned_payments = (
+	query = (
 		qb.from_(PaymentEntry)
 		.left_join(PaymentEntryReference)
 		.on(PaymentEntryReference.parent == PaymentEntry.name)
 		.left_join(Telr_payment_request)
 		.on(Telr_payment_request.telr_order_ref == PaymentEntry.reference_no)
-		.left_join(tabby_payment_request)
-		.on(tabby_payment_request.tabby_order_ref == PaymentEntry.reference_no)
 		.select(
 			PaymentEntry.name,
 			PaymentEntry.paid_amount,
@@ -76,15 +74,29 @@ def get_data():
 			PaymentEntry.posting_date,
 			PaymentEntry.docstatus,
 			Telr_payment_request.status.as_("telr_status"),
-			tabby_payment_request.status.as_("tabby_status"),
 		)
-		.where(
+	)
+
+	if tabby_installed:
+		tabby_payment_request = DocType("Tabby Payment Request")
+		query = (
+			query.left_join(tabby_payment_request)
+			.on(tabby_payment_request.tabby_order_ref == PaymentEntry.reference_no)
+			.select(tabby_payment_request.status.as_("tabby_status"))
+			.where(
+				((PaymentEntry.docstatus == 1) & (PaymentEntryReference.name.isnull()))
+				| ((PaymentEntry.docstatus == 2) & (Telr_payment_request.status != "Refunded"))
+				| ((PaymentEntry.docstatus == 2) & (tabby_payment_request.status != "REFUND"))
+			)
+		)
+	else:
+		query = query.where(
 			((PaymentEntry.docstatus == 1) & (PaymentEntryReference.name.isnull()))
 			| ((PaymentEntry.docstatus == 2) & (Telr_payment_request.status != "Refunded"))
-			| ((PaymentEntry.docstatus == 2) & (tabby_payment_request.status != "REFUND"))
 		)
-	).run(as_dict=True)
-	for payment in orphaned_payments:
+
+	for payment in query.run(as_dict=True):
+		tabby_status = payment.get("tabby_status") if tabby_installed else None
 		data.append(
 			{
 				"payment_entry": payment.name,
@@ -92,7 +104,7 @@ def get_data():
 				"payment_mode": payment.mode_of_payment,
 				"posting_date": payment.posting_date,
 				"cancelled": payment.docstatus == 2,
-				"refunded": (payment.telr_status == "Refunded" or payment.tabby_status == "REFUND"),
+				"refunded": (payment.telr_status == "Refunded" or tabby_status == "REFUND"),
 			}
 		)
 	return data

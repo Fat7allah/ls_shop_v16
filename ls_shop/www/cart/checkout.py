@@ -1,8 +1,8 @@
 import frappe
 from frappe.query_builder import DocType
 from frappe.utils.caching import site_cache
-from webshop.webshop.shopping_cart.cart import _get_cart_quotation, get_cart_quotation
 
+from ls_shop.core import _get_cart_quotation
 from ls_shop.utils import (
 	format_addresses,
 	get_addresses,
@@ -134,7 +134,23 @@ def get_store_pickup_addresses():
 	# Map address to warehouse
 	address_to_warehouse = {link["parent"]: link["link_name"] for link in links}
 	address_names = list(address_to_warehouse.keys())
-	addresses = frappe.get_all("Address", filters={"name": ["in", address_names]}, fields=["*"])
+	addresses = frappe.get_all(
+		"Address",
+		filters={"name": ["in", address_names]},
+		fields=[
+			"name",
+			"address_title",
+			"address_type",
+			"address_line1",
+			"address_line2",
+			"city",
+			"state",
+			"country",
+			"pincode",
+			"phone",
+			"email_id",
+		],
+	)
 	# Format and attach warehouse info
 	formatted_addresses = format_addresses(addresses, address_type="Shop")
 	for addr in formatted_addresses:
