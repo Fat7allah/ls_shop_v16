@@ -85,7 +85,7 @@ You can track your order status at: {{ login_url }}
 
 Best regards,
 {{ company }}""",
-			"doctype": "Sales Order",
+			"reference_doctype": "Sales Order",
 		},
 		{
 			"name": "Item In Stock",
@@ -98,7 +98,7 @@ You can purchase it now at: {{ item_url }}
 
 Best regards,
 {{ company }}""",
-			"doctype": "Item",
+			"reference_doctype": "Item",
 		},
 		{
 			"name": "Order Cancellation",
@@ -111,7 +111,7 @@ If you have any questions, please contact our customer service.
 
 Best regards,
 {{ company }}""",
-			"doctype": "Sales Order",
+			"reference_doctype": "Sales Order",
 		},
 	]
 
