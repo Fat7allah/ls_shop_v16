@@ -21,6 +21,13 @@ import frappe
 from frappe import _
 from frappe.utils import cint, flt, random_string
 
+DEMO_IMAGES = [
+    "/assets/ls_shop/images/1.jpg",
+    "/assets/ls_shop/images/2.jpg",
+    "/assets/ls_shop/images/3.jpg",
+    "/assets/ls_shop/images/4.jpg",
+]
+
 
 def install_demo_data():
 	"""Main function to install all demo data"""
@@ -253,7 +260,8 @@ def ensure_warehouse_exists():
 	company = frappe.defaults.get_user_default("Company") or frappe.db.get_value("Company", {}, "name")
 
 	if not company:
-		frappe.throw(_("Please create a Company first before running demo data"))
+		print("    ⚠ No Company found. Skipping warehouse creation (warehouse-dependent features will be unavailable).")
+		return None
 
 	# Create default warehouse
 	company_abbr = frappe.db.get_value("Company", company, "abbr")
@@ -359,6 +367,7 @@ def create_demo_products():
 			"sizes": sizes_to_use[:4],  # Use up to 4 sizes (can represent different fitment types)
 			"base_price": 89.99,
 			"sale_price": 74.99,
+			"images": DEMO_IMAGES[:2],
 		},
 		{
 			"code": "AIR-FILTER",
@@ -370,6 +379,7 @@ def create_demo_products():
 			"sizes": sizes_to_use[:3],  # Use up to 3 sizes
 			"base_price": 49.99,
 			"sale_price": 39.99,
+			"images": DEMO_IMAGES[2:],
 		},
 		{
 			"code": "FLOOR-MATS",
@@ -381,6 +391,7 @@ def create_demo_products():
 			"sizes": sizes_to_use[:5],  # Use up to 5 sizes (different vehicle models)
 			"base_price": 59.99,
 			"sale_price": 49.99,
+			"images": DEMO_IMAGES,
 		},
 	]
 
@@ -501,22 +512,7 @@ def create_style_variant(configurator_name, template_name, color, product_data):
 	# Route should NOT include language prefix - hooks.py handles that
 	route_slug = f"{product_data['code'].lower()}-{color.lower()}"
 
-	color_hex_map = {
-		"Black": "000000",
-		"White": "FFFFFF",
-		"Blue": "0000FF",
-		"Red": "FF0000",
-		"Green": "28A745",
-		"Navy": "000080",
-		"Gray": "6C757D",
-	}
-
-	bg_hex = color_hex_map.get(color, "6C757D")
-
-	text_hex = "000000" if bg_hex == "FFFFFF" else "FFFFFF"
-
-	image_text = f"{color} {product_data['name']}".replace(" ", "+")
-	image_url = f"https://placehold.co/800x800/{bg_hex}/{text_hex}.png?text={image_text}"
+	product_images = product_data.get("images") or DEMO_IMAGES
 
 	variant = frappe.get_doc(
 		{
@@ -529,11 +525,7 @@ def create_style_variant(configurator_name, template_name, color, product_data):
 			"item_group": product_data["item_group"],
 			"is_published": 1,
 			"route": route_slug,
-			"images": [
-				{
-					"image": image_url,
-				}
-			],
+			"images": [{"image": url} for url in product_images],
 		}
 	)
 
@@ -671,6 +663,12 @@ def create_website_items():
 		fields=["name", "item_name", "item_group", "brand", "description", "variant_of"],
 	)
 
+	template_images = {
+		"BRAKE-PADS": DEMO_IMAGES[:2],
+		"AIR-FILTER": DEMO_IMAGES[2:],
+		"FLOOR-MATS": DEMO_IMAGES,
+	}
+
 	warehouse = ensure_warehouse_exists()
 
 	count_created = 0
@@ -679,6 +677,9 @@ def create_website_items():
 	for item in items:
 		# Get full item details
 		item_doc = frappe.get_doc("Item", item.name)
+
+		product_images = template_images.get(item.variant_of, DEMO_IMAGES)
+		website_image = product_images[0]
 
 		# Check if Website Item already exists
 		existing_wi = frappe.db.get_value("Website Item", {"item_code": item.name}, "name")
@@ -699,6 +700,7 @@ def create_website_items():
 					"description": item.description or item_doc.description or "",
 					"website_warehouse": warehouse,
 					"published": 1,
+					"website_image": website_image,
 					"website_item_groups": [{"item_group": ig} for ig in item_groups] if item_groups else [],
 				}
 			)
@@ -709,6 +711,8 @@ def create_website_items():
 			wi_doc = frappe.get_doc("Website Item", existing_wi)
 			wi_doc.published = 1
 			wi_doc.website_warehouse = warehouse
+			if not wi_doc.website_image:
+				wi_doc.website_image = website_image
 
 			# Ensure website_item_groups is set
 			if not wi_doc.website_item_groups and item.item_group:
