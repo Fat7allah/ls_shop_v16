@@ -1,0 +1,77 @@
+{
+    "actions": [],
+    "creation": "2026-05-06 16:30:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "reward_catalog_item",
+        "item",
+        "item_name",
+        "points_per_unit",
+        "quantity",
+        "total_points"
+    ],
+    "fields": [
+        {
+            "fieldname": "reward_catalog_item",
+            "fieldtype": "Link",
+            "label": "Reward Catalog Item",
+            "options": "Reward Catalog Item",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "item",
+            "fieldtype": "Link",
+            "label": "Item",
+            "options": "Item",
+            "fetch_from": "reward_catalog_item.item",
+            "read_only": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "item_name",
+            "fieldtype": "Data",
+            "label": "Item Name",
+            "fetch_from": "reward_catalog_item.item_name",
+            "read_only": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "points_per_unit",
+            "fieldtype": "Int",
+            "label": "Points per Unit",
+            "fetch_from": "reward_catalog_item.points_required",
+            "read_only": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "quantity",
+            "fieldtype": "Int",
+            "label": "Quantity",
+            "reqd": 1,
+            "default": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "total_points",
+            "fieldtype": "Int",
+            "label": "Total Points",
+            "read_only": 1,
+            "in_list_view": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "istable": 1,
+    "links": [],
+    "modified": "2026-05-06 16:30:00.000000",
+    "modified_by": "Administrator",
+    "module": "Ls Shop",
+    "name": "Reward Redemption Item",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

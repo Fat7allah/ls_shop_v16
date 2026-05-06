@@ -1,0 +1,174 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "field:reward_plan_name",
+    "creation": "2026-05-06 16:30:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "reward_plan_name",
+        "reward_plan_type",
+        "status",
+        "column_break_1",
+        "customer_group",
+        "item_group",
+        "expiration_days",
+        "section_break_1",
+        "minimum_invoice_amount",
+        "points_per_amount",
+        "section_break_2",
+        "item_reward_points",
+        "section_break_3",
+        "levels",
+        "affiliate_level_table"
+    ],
+    "fields": [
+        {
+            "fieldname": "reward_plan_name",
+            "fieldtype": "Data",
+            "label": "Reward Plan Name",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "reward_plan_type",
+            "fieldtype": "Select",
+            "label": "Reward Plan Type",
+            "options": "Based on Invoice Amount\nBased on Item Reward Points",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Active\nInactive",
+            "default": "Active",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "customer_group",
+            "fieldtype": "Link",
+            "label": "Customer Group",
+            "options": "Customer Group"
+        },
+        {
+            "fieldname": "item_group",
+            "fieldtype": "Link",
+            "label": "Item Group",
+            "options": "Item Group",
+            "depends_on": "eval:doc.reward_plan_type=='Based on Item Reward Points'"
+        },
+        {
+            "fieldname": "expiration_days",
+            "fieldtype": "Int",
+            "label": "Points Expiration (Days)",
+            "description": "Number of days until points expire. Leave 0 for no expiration.",
+            "default": 0
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break",
+            "label": "Invoice Amount Settings",
+            "depends_on": "eval:doc.reward_plan_type=='Based on Invoice Amount'"
+        },
+        {
+            "fieldname": "minimum_invoice_amount",
+            "fieldtype": "Currency",
+            "label": "Minimum Invoice Amount",
+            "reqd": 1,
+            "depends_on": "eval:doc.reward_plan_type=='Based on Invoice Amount'"
+        },
+        {
+            "fieldname": "points_per_amount",
+            "fieldtype": "Float",
+            "label": "Points per Amount",
+            "description": "How many currency units for 1 point (e.g., 10 = 1 point per 10 MAD)",
+            "reqd": 1,
+            "depends_on": "eval:doc.reward_plan_type=='Based on Invoice Amount'"
+        },
+        {
+            "fieldname": "section_break_2",
+            "fieldtype": "Section Break",
+            "label": "Item Reward Points",
+            "depends_on": "eval:doc.reward_plan_type=='Based on Item Reward Points'"
+        },
+        {
+            "fieldname": "item_reward_points",
+            "fieldtype": "Table",
+            "label": "Item Reward Points Table",
+            "options": "Reward Plan Item",
+            "depends_on": "eval:doc.reward_plan_type=='Based on Item Reward Points'"
+        },
+        {
+            "fieldname": "section_break_3",
+            "fieldtype": "Section Break",
+            "label": "Affiliate Levels"
+        },
+        {
+            "fieldname": "levels",
+            "fieldtype": "Int",
+            "label": "Maximum Affiliate Levels",
+            "description": "Maximum depth of affiliate chain to reward",
+            "reqd": 1,
+            "default": 3
+        },
+        {
+            "fieldname": "affiliate_level_table",
+            "fieldtype": "Table",
+            "label": "Affiliate Level Percentages",
+            "options": "Reward Plan Affiliate Level",
+            "reqd": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2026-05-06 16:30:00.000000",
+    "modified_by": "Administrator",
+    "module": "Ls Shop",
+    "name": "Reward Plan",
+    "naming_rule": "By fieldname: reward_plan_name",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Sales Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Sales User",
+            "share": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

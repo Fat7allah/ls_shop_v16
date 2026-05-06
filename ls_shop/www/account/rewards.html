@@ -1,0 +1,303 @@
+{% extends "templates/user_layout.html" %}
+{% block user_body %}
+
+<!-- Rewards Dashboard -->
+<div x-data="rewardsData()" x-init="init()" class="space-y-8">
+
+    <!-- Loading State -->
+    <div x-show="loading" class="flex items-center justify-center py-12">
+        <div class="animate-spin size-8 border-4 border-primary border-t-transparent rounded-full"></div>
+    </div>
+
+    <!-- Error State -->
+    <div x-show="error" x-cloak class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p class="text-red-600" x-text="error"></p>
+        <button @click="init()" class="text-primary text-sm mt-2 hover:underline">{{ _('Retry') }}</button>
+    </div>
+
+    <!-- Content -->
+    <div x-show="!loading && !error" x-cloak>
+
+        <!-- Points Balance Card -->
+        <div class="bg-gradient-to-r from-primary to-accent rounded-xl p-6 text-white shadow-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-white/80 text-sm font-medium mb-1">{{ _('Votre solde de points') }}</p>
+                    <h2 class="text-4xl font-bold" x-text="data.balance.toLocaleString()"></h2>
+                    <p class="text-white/70 text-sm mt-2">
+                        <span x-show="data.customer_tier" class="inline-flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-yellow-300"></span>
+                            <span x-text="data.customer_tier"></span>
+                            {{ _('Member') }}
+                        </span>
+                    </p>
+                </div>
+                <div class="text-right">
+                    <div class="bg-white/20 rounded-lg p-3">
+                        <i class="fas fa-gift text-3xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Referral Code -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ _('Votre code de parrainage') }}</h3>
+                <div class="flex items-center gap-3">
+                    <div class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 font-mono text-lg text-gray-700"
+                         x-text="data.referral_code || '---'"></div>
+                    <button @click="copyReferralCode()"
+                            class="bg-primary text-white px-4 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+                            :class="{ 'bg-green-600': copied }"
+                            x-text="copied ? '{{ _('Copié!') }}' : '{{ _('Copier') }}'">
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-3">
+                    {{ _('Partagez ce code avec vos amis. Vous gagnerez des points sur leurs achats!') }}
+                </p>
+            </div>
+
+            <!-- Referral Stats -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ _('Statistiques') }}</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-2xl font-bold text-primary" x-text="data.referral_count || 0"></p>
+                        <p class="text-sm text-gray-500">{{ _('Filleuls') }}</p>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <p class="text-2xl font-bold text-accent" x-text="pendingRedemptions"></p>
+                        <p class="text-sm text-gray-500">{{ _('Rédemptions en cours') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction History -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{{ _('Historique des transactions') }}</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ _('Date') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ _('Type') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ _('Description') }}</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{{ _('Points') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <template x-for="txn in data.history" :key="txn.name">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-sm text-gray-600" x-text="formatDate(txn.date)"></td>
+                                <td class="px-4 py-3">
+                                    <span class="inline-flex px-2 py-1 text-xs rounded-full"
+                                          :class="getTransactionBadgeClass(txn.transaction_type)">
+                                        <span x-text="getTransactionLabel(txn.transaction_type)"></span>
+                                        <span x-show="txn.level > 0" class="ml-1" x-text="'(N' + txn.level +')'"></span>
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-700" x-text="txn.remarks || '-'"></td>
+                                <td class="px-4 py-3 text-right font-medium"
+                                    :class="txn.points >= 0 ? 'text-green-600' : 'text-red-600'"
+                                    x-text="(txn.points >= 0 ? '+' : '') + txn.points.toLocaleString()">
+                                </td>
+                            </tr>
+                        </template>
+                        <tr x-show="!data.history || data.history.length === 0">
+                            <td colspan="4" class="px-4 py-8 text-center text-gray-500">
+                                {{ _('Aucune transaction') }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Redemption History -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{{ _('Historique des rédemptions') }}</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ _('Date') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ _('Document') }}</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">{{ _('Points utilisés') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <template x-for="redemption in data.redemptions" :key="redemption.name">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-sm text-gray-600" x-text="formatDate(redemption.redemption_date)"></td>
+                                <td class="px-4 py-3">
+                                    <a :href="'/delivery-note/' + redemption.delivery_note" x-show="redemption.delivery_note"
+                                       class="text-primary hover:underline text-sm" x-text="redemption.name">
+                                    </a>
+                                    <span x-show="!redemption.delivery_note" x-text="redemption.name" class="text-sm text-gray-700"></span>
+                                </td>
+                                <td class="px-4 py-3 text-right font-medium text-red-600"
+                                    x-text="'-' + redemption.total_points_used.toLocaleString()">
+                                </td>
+                            </tr>
+                        </template>
+                        <tr x-show="!data.redemptions || data.redemptions.length === 0">
+                            <td colspan="3" class="px-4 py-8 text-center text-gray-500">
+                                {{ _('Aucune rédemption') }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reward Catalog -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ _('Catalogue de récompenses') }}</h3>
+            <p class="text-sm text-gray-500 mb-4">
+                {{ _('Contactez votre commercial pour réclamer ces récompenses.') }}
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <template x-for="item in data.catalog" :key="item.name">
+                    <div class="border rounded-lg overflow-hidden transition-all"
+                         :class="item.affordable && item.tier_accessible ? 'border-primary hover:shadow-md' : 'border-gray-200 opacity-60'">
+                        <div class="aspect-square bg-gray-100 relative">
+                            <img :src="item.item_image || '/assets/frappe/images/no-image.png'"
+                                 class="w-full h-full object-contain p-2">
+                            <div x-show="!item.affordable || !item.tier_accessible"
+                                 class="absolute inset-0 bg-gray-900/50 flex items-center justify-center">
+                                <span x-show="!item.affordable" class="bg-red-600 text-white px-2 py-1 text-xs rounded">
+                                    {{ _('Points insuffisants') }}
+                                </span>
+                                <span x-show="item.affordable && !item.tier_accessible" class="bg-yellow-600 text-white px-2 py-1 text-xs rounded">
+                                    {{ _('Niveau requis') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <p class="font-medium text-sm text-gray-800 truncate" :title="item.item_name" x-text="item.item_name"></p>
+                            <div class="flex items-center justify-between mt-2">
+                                <span class="text-primary font-bold" x-text="item.points_required.toLocaleString() + ' pts'"></span>
+                                <span x-show="item.min_customer_level" class="text-xs px-2 py-1 bg-gray-100 rounded"
+                                      x-text="item.min_customer_level"></span>
+                            </div>
+                            <p x-show="item.description" class="text-xs text-gray-500 mt-2 line-clamp-2" x-text="item.description"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div x-show="!data.catalog || data.catalog.length === 0" class="text-center py-8 text-gray-500">
+                {{ _('Aucun article disponible dans le catalogue') }}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function rewardsData() {
+    return {
+        loading: true,
+        error: null,
+        data: {
+            balance: 0,
+            history: [],
+            referral_code: '',
+            catalog: [],
+            redemptions: [],
+            referral_count: 0,
+            customer_tier: ''
+        },
+        copied: false,
+
+        get pendingRedemptions() {
+            return this.data.redemptions?.filter(r => !r.delivery_note).length || 0;
+        },
+
+        async init() {
+            this.loading = true;
+            this.error = null;
+
+            try {
+                const response = await frappe_call(
+                    '/api/v2/method/ls_shop.reward_api.get_customer_reward_summary'
+                );
+
+                if (response.message) {
+                    this.data = response.message;
+                }
+            } catch (err) {
+                this.error = '{{ _("Erreur de chargement des données") }}';
+                console.error('Rewards load error:', err);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        },
+
+        getTransactionLabel(type) {
+            const labels = {
+                'Invoice Reward': '{{ _("Achat") }}',
+                'Affiliate Reward': '{{ _("Parrainage") }}',
+                'Redemption': '{{ _("Rédemption") }}',
+                'Redemption Reversal': '{{ _("Annulation") }}',
+                'Order Cancellation Reversal': '{{ _("Annulation commande") }}',
+                'Adjustment': '{{ _("Ajustement") }}'
+            };
+            return labels[type] || type;
+        },
+
+        getTransactionBadgeClass(type) {
+            const classes = {
+                'Invoice Reward': 'bg-green-100 text-green-800',
+                'Affiliate Reward': 'bg-blue-100 text-blue-800',
+                'Redemption': 'bg-red-100 text-red-800',
+                'Redemption Reversal': 'bg-orange-100 text-orange-800',
+                'Order Cancellation Reversal': 'bg-gray-100 text-gray-800',
+                'Adjustment': 'bg-purple-100 text-purple-800'
+            };
+            return classes[type] || 'bg-gray-100 text-gray-800';
+        },
+
+        async copyReferralCode() {
+            if (!this.data.referral_code) return;
+
+            try {
+                await navigator.clipboard.writeText(this.data.referral_code);
+                this.copied = true;
+                setTimeout(() => this.copied = false, 2000);
+            } catch (err) {
+                // Fallback
+                const textArea = document.createElement('textarea');
+                textArea.value = this.data.referral_code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                this.copied = true;
+                setTimeout(() => this.copied = false, 2000);
+            }
+        }
+    };
+}
+</script>
+
+{% endblock %}
