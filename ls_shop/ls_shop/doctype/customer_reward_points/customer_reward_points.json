@@ -1,0 +1,147 @@
+{
+    "actions": [],
+    "autoname": "hash",
+    "creation": "2026-05-06 16:30:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "customer",
+        "date",
+        "column_break_1",
+        "points",
+        "transaction_type",
+        "reference_section",
+        "reference_document_type",
+        "reference_name",
+        "reward_plan",
+        "level",
+        "section_break_1",
+        "expiration_date",
+        "remarks"
+    ],
+    "fields": [
+        {
+            "fieldname": "customer",
+            "fieldtype": "Link",
+            "label": "Customer",
+            "options": "Customer",
+            "reqd": 1
+        },
+        {
+            "fieldname": "date",
+            "fieldtype": "Date",
+            "label": "Date",
+            "default": "Today",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "points",
+            "fieldtype": "Float",
+            "label": "Points",
+            "description": "Positive = credit, Negative = debit",
+            "reqd": 1
+        },
+        {
+            "fieldname": "transaction_type",
+            "fieldtype": "Select",
+            "label": "Transaction Type",
+            "options": "Invoice Reward\nAffiliate Reward\nRedemption\nRedemption Reversal\nOrder Cancellation Reversal\nManual Adjustment",
+            "reqd": 1
+        },
+        {
+            "fieldname": "reference_section",
+            "fieldtype": "Section Break",
+            "label": "Reference"
+        },
+        {
+            "fieldname": "reference_document_type",
+            "fieldtype": "Link",
+            "label": "Reference Document Type",
+            "options": "DocType"
+        },
+        {
+            "fieldname": "reference_name",
+            "fieldtype": "Dynamic Link",
+            "label": "Reference Name",
+            "options": "reference_document_type"
+        },
+        {
+            "fieldname": "reward_plan",
+            "fieldtype": "Link",
+            "label": "Reward Plan",
+            "options": "Reward Plan"
+        },
+        {
+            "fieldname": "level",
+            "fieldtype": "Int",
+            "label": "Level",
+            "description": "0 = direct customer, 1+ = affiliate level"
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "expiration_date",
+            "fieldtype": "Date",
+            "label": "Expiration Date",
+            "description": "Points expire on this date (if set)"
+        },
+        {
+            "fieldname": "remarks",
+            "fieldtype": "Small Text",
+            "label": "Remarks"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2026-05-06 16:30:00.000000",
+    "modified_by": "Administrator",
+    "module": "Ls Shop",
+    "name": "Customer Reward Points",
+    "naming_rule": "Random",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Sales Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Sales User",
+            "share": 1
+        }
+    ],
+    "sort_field": "date",
+    "sort_order": "DESC",
+    "states": []
+}

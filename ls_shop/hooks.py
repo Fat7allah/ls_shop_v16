@@ -49,6 +49,7 @@ website_route_rules = [
 	},
 	{"from_route": "/en/account/wishlist", "to_route": "/account/wishlist.html"},
 	{"from_route": "/en/account/address", "to_route": "/account/address.html"},
+	{"from_route": "/en/account/rewards", "to_route": "/account/rewards.html"},
 	#
 	# ------------
 	# Arabic Routes
@@ -76,6 +77,7 @@ website_route_rules = [
 	},
 	{"from_route": "/ar/account/wishlist", "to_route": "/account/wishlist.html"},
 	{"from_route": "/ar/account/address", "to_route": "/account/address.html"},
+	{"from_route": "/ar/account/rewards", "to_route": "/account/rewards.html"},
 ]
 
 before_request = ["ls_shop.utils.before_request"]
@@ -83,6 +85,7 @@ before_request = ["ls_shop.utils.before_request"]
 doctype_js = {
 	"Item": "public/js/extends/item.js",
 	"Sales Order": "public/js/extends/sales_order.js",
+	"Reward Redemption": "public/js/reward_redemption.js",
 }
 
 after_install = "ls_shop.migrate.after_install"
@@ -93,6 +96,9 @@ doc_events = {
 	"User": {
 		"before_insert": "ls_shop.utils.prevent_welcome_email",
 	},
+	"Customer": {
+		"before_insert": "ls_shop.reward_hooks.generate_referral_code",
+	},
 	"Payment Entry": {
 		"on_submit": [
 			"ls_shop.lifestyle_shop_ecommerce.doctype.telr_payment_request.telr_payment_request.refund_payment_for_payment_entry",
@@ -102,11 +108,18 @@ doc_events = {
 		"on_submit": [
 			"ls_shop.jobs.send_order_success_acknowledgement",
 			"ls_shop.utils.update_so_status_from_related_doc",
+			"ls_shop.reward_hooks.on_submit_sales_order",
 		],
 		"on_cancel": [
 			"ls_shop.jobs.send_order_cancel_acknowledgement",
 			"ls_shop.utils.update_so_status_from_related_doc",
+			"ls_shop.reward_hooks.on_cancel_sales_order",
 		],
+	},
+	"Reward Redemption": {
+		"before_submit": "ls_shop.reward_hooks.before_submit_redemption",
+		"on_submit": "ls_shop.reward_hooks.on_submit_redemption",
+		"on_cancel": "ls_shop.reward_hooks.on_cancel_redemption",
 	},
 	"Stock Ledger Entry": {"after_insert": ["ls_shop.jobs.send_product_back_in_stock_email"]},
 	"Sales Invoice": {"on_submit": "ls_shop.utils.update_so_status_from_related_doc"},
@@ -369,6 +382,21 @@ fixtures = [
 				"name",
 				"in",
 				("Order Confirmation", "Order Cancellation", "Item In Stock"),
+			]
+		],
+	},
+	{
+		"dt": "Custom Field",
+		"filters": [
+			[
+				"name",
+				"in",
+				(
+					"Customer-referred_by",
+					"Customer-referral_code",
+					"Customer-reward_tier",
+					"Delivery Note-reward_redemption",
+				)
 			]
 		],
 	},

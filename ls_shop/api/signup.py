@@ -26,7 +26,7 @@ def send_login_otp(email: str):
 
 @frappe.whitelist(allow_guest=True)
 @rate_limit(limit=30, seconds=60 * 60)
-def verify_signup_otp(email: str, first_name: str, last_name: str, otp: str):
+def verify_signup_otp(email: str, first_name: str, last_name: str, otp: str, referral_code: str = None):
 	stored_otp = frappe.cache.get_value(f"otp:{email}")
 	otp = int(otp) if otp else 0
 	if stored_otp != otp:
@@ -43,7 +43,41 @@ def verify_signup_otp(email: str, first_name: str, last_name: str, otp: str):
 	)
 	user.insert(ignore_permissions=True)
 
+	# Create customer and link referral if code provided
+	_create_customer_with_referral(user, referral_code)
+
 	frappe.local.login_manager.login_as(email)
+
+
+def _create_customer_with_referral(user, referral_code):
+	"""Create customer linked to user and set referral if code provided"""
+	try:
+		customer = frappe.new_doc("Customer")
+		customer.customer_name = f"{user.first_name} {user.last_name}".strip()
+		customer.email_id = user.email
+		
+		# Set referral if code provided
+		if referral_code:
+			referrer = frappe.db.get_value("Customer", {"referral_code": referral_code.upper()}, "name")
+			if referrer:
+				customer.referred_by = referrer
+				# Tier will be set by the before_insert hook
+			else:
+				frappe.log_error(f"Invalid referral code during signup: {referral_code}", "Referral Code")
+		
+		customer.insert(ignore_permissions=True)
+		
+		# Link customer to user via Portal User
+		if not frappe.db.exists("Portal User", {"user": user.name}):
+			portal_user = frappe.new_doc("Portal User")
+			portal_user.user = user.name
+			portal_user.parent = customer.name
+			portal_user.parenttype = "Customer"
+			portal_user.parentfield = "portal_users"
+			portal_user.insert(ignore_permissions=True)
+		
+	except Exception as e:
+		frappe.log_error(f"Error creating customer for user {user.name}: {str(e)}", "Signup Customer Creation")
 
 
 @frappe.whitelist(allow_guest=True)

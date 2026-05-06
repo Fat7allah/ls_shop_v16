@@ -5,11 +5,20 @@
     otp_sent: false,
     first_name:'',
     last_name:'',
+    referral_code:'',
     otp: ['', '', '', '', '', ''],
     email:'',
     resend_timer: 0,
     resend_interval: null,
-    }" class="w-full">
+    }"
+    x-init="
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        if (refCode) {
+            referral_code = refCode.toUpperCase();
+        }
+    "
+    class="w-full">
 
     <button x-on:click="is_open = true" class="cursor-pointer w-full">
         {{caller()}}
@@ -153,6 +162,19 @@
                                     class="w-full border focus:outline-none px-2 py-1 border-gray-300 text-gray-700 rounded-lg"
                                     placeholder="Enter your name" required>
                             </div>
+                            <div class="mb-3">
+                                <label class="block text-xs font-normal text-gray-400 mb-1">
+                                    {{ _('Referral Code') }}
+                                    <span class="text-gray-300">({{ _('Optional') }})</span>
+                                </label>
+                                <input x-model="referral_code" type="text"
+                                    class="w-full border focus:outline-none px-2 py-1 border-gray-300 text-gray-700 rounded-lg uppercase"
+                                    placeholder="REF-XXXXXXXX"
+                                    x-on:input="referral_code = referral_code.toUpperCase()">
+                                <p class="text-xs text-gray-400 mt-1" x-show="referral_code">
+                                    {{ _('Have a friend\'s code? Enter it here') }}
+                                </p>
+                            </div>
                             <button
                                 class="bg-gray-300 py-2 px-3 rounded-lg mt-6 w-full text-black cursor-pointer disabled:opacity-75 flex items-center justify-center"
                                 type="submit" x-ref="sign_in_btn">{{_('Sign Up')}}<div
@@ -286,8 +308,8 @@
                 'email': x_data.email,
                 'otp': otpValue,
                 'first_name': x_data.first_name,
-                'last_name': x_data.last_name
-
+                'last_name': x_data.last_name,
+                'referral_code': x_data.referral_code
             }
         }
         const btn = ref.verify_otp_btn
