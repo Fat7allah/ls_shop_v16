@@ -4,3 +4,4 @@
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
+ls_shop.patches.create_reward_custom_fields
